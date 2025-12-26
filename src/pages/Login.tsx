@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/Logo";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import logoImage from "@/assets/follow-iq-logo.png";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,12 +16,30 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const { signIn } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate login
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    const { error } = await signIn(formData.email, formData.password);
+    
+    if (error) {
+      toast({
+        title: "Login failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
+      });
+      navigate("/");
+    }
+    
     setIsLoading(false);
   };
 
@@ -38,15 +60,9 @@ const Login = () => {
           transition={{ duration: 0.6 }}
           className="w-full max-w-md"
         >
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <Zap className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-2xl font-display font-bold text-foreground">
-              FollowIO
-            </span>
-          </Link>
+          <div className="mb-8">
+            <Logo size="lg" />
+          </div>
 
           <h1 className="text-3xl font-display font-bold text-foreground mb-2">
             Welcome back
@@ -150,9 +166,11 @@ const Login = () => {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="relative z-10 text-center px-12"
         >
-          <div className="w-20 h-20 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-8 glow-primary">
-            <Zap className="w-10 h-10 text-primary-foreground" />
-          </div>
+          <img 
+            src={logoImage} 
+            alt="Follow IQ" 
+            className="w-20 h-20 mx-auto mb-8"
+          />
           <h2 className="text-3xl font-display font-bold text-foreground mb-4">
             Never lose a lead again
           </h2>

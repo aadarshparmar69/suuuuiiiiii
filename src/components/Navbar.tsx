@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Zap, LogOut, User } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
@@ -50,15 +51,7 @@ export const Navbar = () => {
     >
       <nav className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center group-hover:shadow-[0_0_20px_hsl(175_80%_50%/0.5)] transition-shadow duration-300">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-display font-bold text-foreground">
-              FollowIO
-            </span>
-          </Link>
+          <Logo size="md" />
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
