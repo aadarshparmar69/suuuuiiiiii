@@ -29,10 +29,8 @@ const values = [
 ];
 
 const team = [
-  { name: "Alex Chen", role: "CEO & Co-founder", initial: "AC" },
-  { name: "Sarah Williams", role: "CTO & Co-founder", initial: "SW" },
-  { name: "Marcus Rodriguez", role: "Head of Product", initial: "MR" },
-  { name: "Emily Thompson", role: "Head of Growth", initial: "ET" },
+  { name: "Aadarsh Parmar", role: "Founder", initial: "AP" },
+  { name: "Sarvesh Rathore", role: "Head of Product", initial: "SR" },
 ];
 
 const About = () => {
@@ -54,7 +52,7 @@ const About = () => {
                 <span className="gradient-text">shouldn't be hard</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                FollowIO was born from a simple frustration: great opportunities were being lost 
+                Follow IQ was born from a simple frustration: great opportunities were being lost 
                 to poor follow-up. Not because people didn't care, but because they didn't have 
                 the right tools.
               </p>
@@ -71,7 +69,7 @@ const About = () => {
                 <div className="grid grid-cols-2 gap-6 text-center">
                   <div>
                     <div className="text-4xl font-display font-bold text-primary mb-2">2,000+</div>
-                    <p className="text-muted-foreground text-sm">Teams using FollowIO</p>
+                    <p className="text-muted-foreground text-sm">Teams using Follow IQ</p>
                   </div>
                   <div>
                     <div className="text-4xl font-display font-bold text-primary mb-2">10M+</div>
@@ -116,12 +114,12 @@ const About = () => {
                 The response rates were 5x higher than email.
               </p>
               <p className="text-muted-foreground">
-                So they built FollowIO: an AI-powered platform that makes WhatsApp follow-up 
+                So they built Follow IQ: an AI-powered platform that makes WhatsApp follow-up 
                 effortless. Smart enough to personalize every message. Simple enough to set 
                 up in 5 minutes. Powerful enough to 10x your conversions.
               </p>
               <p className="text-foreground font-semibold">
-                Today, over 2,000 teams use FollowIO to never lose a lead again.
+                Today, over 2,000 teams use Follow IQ to never lose a lead again.
               </p>
             </div>
           </AnimatedSection>
@@ -172,7 +170,7 @@ const About = () => {
             </p>
           </AnimatedSection>
 
-          <StaggeredContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <StaggeredContainer className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {team.map((member) => (
               <StaggeredItem key={member.name}>
                 <div className="glass-card p-6 text-center">

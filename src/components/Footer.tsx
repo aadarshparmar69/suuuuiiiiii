@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
-import { Zap, Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 const footerLinks = {
   product: [
@@ -26,7 +27,7 @@ const socialLinks = [
   { icon: Twitter, href: "#", label: "Twitter" },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
   { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@followio.com", label: "Email" },
+  { icon: Mail, href: "mailto:hello@followiq.com", label: "Email" },
 ];
 
 export const Footer = forwardRef<HTMLElement>((props, ref) => {
@@ -36,14 +37,9 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <Zap className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-display font-bold text-foreground">
-                FollowIO
-              </span>
-            </Link>
+            <div className="mb-4">
+              <Logo size="md" />
+            </div>
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
               AI-powered follow-up automation. Never lose a lead again.
             </p>
@@ -116,7 +112,7 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} FollowIO. All rights reserved.
+            © {new Date().getFullYear()} Follow IQ. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm">
             Made with ❤️ for sales teams everywhere
