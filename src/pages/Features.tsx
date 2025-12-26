@@ -19,11 +19,18 @@ import {
 import { Layout } from "@/components/Layout";
 import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
 import { CTASection } from "@/components/sections/CTASection";
+import { LeadPipelineDemo } from "@/components/demos/LeadPipelineDemo";
+import { FollowUpTimelineDemo } from "@/components/demos/FollowUpTimelineDemo";
+import { AIMessageDemo } from "@/components/demos/AIMessageDemo";
+import { WhatsAppScheduleDemo } from "@/components/demos/WhatsAppScheduleDemo";
+import { TeamCollaborationDemo } from "@/components/demos/TeamCollaborationDemo";
+import { PerformanceInsightsDemo } from "@/components/demos/PerformanceInsightsDemo";
 
 const featureCategories = [
   {
     title: "AI-Powered Intelligence",
     description: "Let AI do the heavy lifting with smart automation and personalization.",
+    demo: "ai-message",
     features: [
       {
         icon: Brain,
@@ -50,6 +57,7 @@ const featureCategories = [
   {
     title: "WhatsApp-First Messaging",
     description: "Connect with leads where they actually respond—on WhatsApp.",
+    demo: "whatsapp",
     features: [
       {
         icon: MessageCircle,
@@ -76,6 +84,7 @@ const featureCategories = [
   {
     title: "Automation & Sequences",
     description: "Set it and forget it. Let automation handle the follow-up work.",
+    demo: "timeline",
     features: [
       {
         icon: Workflow,
@@ -100,18 +109,46 @@ const featureCategories = [
     ],
   },
   {
-    title: "Team & Analytics",
+    title: "Lead Management",
+    description: "Organize, prioritize, and track every opportunity in one place.",
+    demo: "pipeline",
+    features: [
+      {
+        icon: Target,
+        title: "Visual Pipeline",
+        description: "Drag-and-drop kanban board to manage leads through every stage.",
+      },
+      {
+        icon: Users,
+        title: "Lead Profiles",
+        description: "Complete lead history with every interaction, note, and touchpoint.",
+      },
+      {
+        icon: Zap,
+        title: "Quick Actions",
+        description: "One-click follow-ups, calls, and task assignments from any view.",
+      },
+      {
+        icon: Shield,
+        title: "Data Security",
+        description: "Enterprise-grade security with encryption and compliance features.",
+      },
+    ],
+  },
+  {
+    title: "Team Collaboration",
     description: "Collaborate effectively and track what matters.",
+    demo: "team",
     features: [
       {
         icon: Users,
-        title: "Team Collaboration",
+        title: "Team Workspaces",
         description: "Assign leads, share notes, and track team performance in real-time.",
       },
       {
-        icon: BarChart3,
-        title: "Analytics Dashboard",
-        description: "Track open rates, response rates, and conversions. Know what's working.",
+        icon: MessageCircle,
+        title: "Internal Notes",
+        description: "Leave notes for teammates visible only to your team, not leads.",
       },
       {
         icon: Shield,
@@ -125,7 +162,53 @@ const featureCategories = [
       },
     ],
   },
+  {
+    title: "Analytics & Insights",
+    description: "Data-driven decisions with powerful reporting.",
+    demo: "insights",
+    features: [
+      {
+        icon: BarChart3,
+        title: "Analytics Dashboard",
+        description: "Track open rates, response rates, and conversions. Know what's working.",
+      },
+      {
+        icon: Target,
+        title: "Conversion Tracking",
+        description: "See exactly which messages and sequences drive the most conversions.",
+      },
+      {
+        icon: Clock,
+        title: "Activity Reports",
+        description: "Monitor team activity and identify coaching opportunities.",
+      },
+      {
+        icon: Sparkles,
+        title: "AI Recommendations",
+        description: "Get AI-powered suggestions to improve your follow-up strategy.",
+      },
+    ],
+  },
 ];
+
+const renderDemo = (demoType: string) => {
+  switch (demoType) {
+    case "pipeline":
+      return <LeadPipelineDemo />;
+    case "timeline":
+      return <FollowUpTimelineDemo />;
+    case "ai-message":
+      return <AIMessageDemo />;
+    case "whatsapp":
+      return <WhatsAppScheduleDemo />;
+    case "team":
+      return <TeamCollaborationDemo />;
+    case "insights":
+      return <PerformanceInsightsDemo />;
+    default:
+      return null;
+  }
+};
 
 const Features = () => {
   return (
@@ -152,39 +235,53 @@ const Features = () => {
         </div>
       </section>
 
-      {/* Feature Categories */}
+      {/* Feature Categories with Interactive Demos */}
       {featureCategories.map((category, categoryIndex) => (
         <section 
           key={category.title} 
-          className={`py-24 lg:py-32 ${categoryIndex % 2 === 1 ? "bg-card/30" : ""}`}
+          className={`py-16 lg:py-24 ${categoryIndex % 2 === 1 ? "bg-card/30" : ""}`}
         >
           <div className="container mx-auto px-4 lg:px-8">
-            <AnimatedSection className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
-                {category.title}
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                {category.description}
-              </p>
-            </AnimatedSection>
+            <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${
+              categoryIndex % 2 === 1 ? "lg:flex-row-reverse" : ""
+            }`}>
+              {/* Content side */}
+              <div className={categoryIndex % 2 === 1 ? "lg:order-2" : ""}>
+                <AnimatedSection className="mb-8">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-4">
+                    {category.title}
+                  </h2>
+                  <p className="text-muted-foreground">
+                    {category.description}
+                  </p>
+                </AnimatedSection>
 
-            <StaggeredContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {category.features.map((feature) => (
-                <StaggeredItem key={feature.title}>
-                  <div className="glass-card p-6 h-full group hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <feature.icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h3 className="text-lg font-display font-bold text-foreground mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {feature.description}
-                    </p>
-                  </div>
-                </StaggeredItem>
-              ))}
-            </StaggeredContainer>
+                <StaggeredContainer className="grid sm:grid-cols-2 gap-4">
+                  {category.features.map((feature) => (
+                    <StaggeredItem key={feature.title}>
+                      <div className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 hover:bg-card transition-all duration-300">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                          <feature.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <h3 className="font-display font-bold text-foreground mb-1 text-sm">
+                          {feature.title}
+                        </h3>
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </StaggeredItem>
+                  ))}
+                </StaggeredContainer>
+              </div>
+
+              {/* Demo side */}
+              <div className={categoryIndex % 2 === 1 ? "lg:order-1" : ""}>
+                <AnimatedSection>
+                  {renderDemo(category.demo)}
+                </AnimatedSection>
+              </div>
+            </div>
           </div>
         </section>
       ))}
