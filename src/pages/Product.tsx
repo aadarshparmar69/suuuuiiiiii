@@ -5,31 +5,33 @@ import {
   Brain, 
   MessageCircle, 
   TrendingUp,
-  Zap,
   Check,
-  BarChart3,
-  Clock,
-  Bell,
-  Users
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
-import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { CTASection } from "@/components/sections/CTASection";
+import { DashboardMockup } from "@/components/mockups/DashboardMockup";
+import { LeadPipelineMockup } from "@/components/mockups/LeadPipelineMockup";
+import { WhatsAppPreview } from "@/components/mockups/WhatsAppPreview";
+import { AISuggestionPanel } from "@/components/mockups/AISuggestionPanel";
+import { FollowUpTimelineMockup } from "@/components/mockups/FollowUpTimelineMockup";
+import { MetricsChartMockup } from "@/components/mockups/MetricsChartMockup";
 
 const workflowSteps = [
   {
     step: "01",
     icon: UserPlus,
     title: "Capture Every Lead",
-    description: "Connect your lead sources—forms, CRM, spreadsheets, or manual entry. FollowIO automatically imports and organizes your leads with smart tagging.",
+    description: "Connect your lead sources—forms, CRM, spreadsheets, or manual entry. Follow IQ automatically imports and organizes your leads with smart tagging.",
     details: [
       "Import from any CRM or spreadsheet",
       "Auto-capture from web forms",
       "Smart lead tagging and categorization",
       "Duplicate detection and merging",
     ],
+    mockup: "pipeline",
   },
   {
     step: "02",
@@ -42,6 +44,7 @@ const workflowSteps = [
       "Message personalization engine",
       "Engagement pattern learning",
     ],
+    mockup: "ai",
   },
   {
     step: "03",
@@ -54,6 +57,7 @@ const workflowSteps = [
       "Multi-step sequence automation",
       "Response detection and routing",
     ],
+    mockup: "whatsapp",
   },
   {
     step: "04",
@@ -66,17 +70,56 @@ const workflowSteps = [
       "A/B testing for sequences",
       "ROI reporting",
     ],
+    mockup: "metrics",
   },
 ];
 
-const dashboardFeatures = [
-  { icon: BarChart3, title: "Analytics", description: "Track performance" },
-  { icon: Clock, title: "Scheduler", description: "Perfect timing" },
-  { icon: Bell, title: "Notifications", description: "Never miss a lead" },
-  { icon: Users, title: "Team View", description: "Collaborate easily" },
+const whatsappMessages = [
+  {
+    id: "1",
+    text: "Hi Sarah! Thanks for your interest in Follow IQ. I'd love to show you how our AI can help automate your follow-ups.",
+    time: "10:30 AM",
+    sent: true,
+    status: "read" as const,
+  },
+  {
+    id: "2",
+    text: "That sounds great! I've been looking for something to help manage our leads better. When can we chat?",
+    time: "10:45 AM",
+    sent: false,
+    status: "read" as const,
+  },
+  {
+    id: "3",
+    text: "Perfect! How about tomorrow at 2 PM? I'll send you a calendar invite.",
+    time: "10:47 AM",
+    sent: true,
+    status: "delivered" as const,
+  },
 ];
 
 const Product = () => {
+  const renderMockup = (type: string) => {
+    switch (type) {
+      case "pipeline":
+        return <LeadPipelineMockup />;
+      case "ai":
+        return <AISuggestionPanel />;
+      case "whatsapp":
+        return (
+          <WhatsAppPreview
+            contactName="Sarah Johnson"
+            contactInitials="SJ"
+            messages={whatsappMessages}
+          />
+        );
+      case "metrics":
+        return <MetricsChartMockup />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Layout>
       {/* Hero */}
@@ -94,7 +137,7 @@ const Product = () => {
               <span className="gradient-text">closed deal</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              See exactly how FollowIO transforms your follow-up process into an 
+              See exactly how Follow IQ transforms your follow-up process into an 
               automated conversion machine.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -117,17 +160,19 @@ const Product = () => {
       {/* Workflow Steps */}
       <section className="py-24 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="space-y-24">
+          <div className="space-y-32">
             {workflowSteps.map((step, index) => (
               <AnimatedSection key={step.step} delay={index * 0.1}>
-                <div className={`grid lg:grid-cols-2 gap-16 items-center ${
-                  index % 2 === 1 ? "lg:flex-row-reverse" : ""
-                }`}>
+                <div className={`grid lg:grid-cols-2 gap-12 lg:gap-16 items-center`}>
                   <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center glow-primary">
+                      <motion.div 
+                        className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
                         <step.icon className="w-8 h-8 text-primary-foreground" />
-                      </div>
+                      </motion.div>
                       <span className="text-5xl font-display font-bold text-muted/50">
                         {step.step}
                       </span>
@@ -140,20 +185,24 @@ const Product = () => {
                     </p>
                     <ul className="space-y-3">
                       {step.details.map((detail) => (
-                        <li key={detail} className="flex items-center gap-3">
+                        <motion.li 
+                          key={detail} 
+                          className="flex items-center gap-3"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                        >
                           <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                             <Check className="w-4 h-4 text-primary" />
                           </div>
                           <span className="text-foreground">{detail}</span>
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className={`glass-card p-8 ${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                    <div className="aspect-video bg-secondary rounded-xl flex items-center justify-center">
-                      <step.icon className="w-16 h-16 text-primary/50" />
-                    </div>
+                  <div className={index % 2 === 1 ? "lg:order-1" : ""}>
+                    {renderMockup(step.mockup)}
                   </div>
                 </div>
               </AnimatedSection>
@@ -180,30 +229,48 @@ const Product = () => {
           </AnimatedSection>
 
           <AnimatedSection delay={0.2}>
-            <div className="glass-card p-8 lg:p-12 glow-primary">
-              {/* Mock Dashboard */}
-              <div className="grid lg:grid-cols-4 gap-6 mb-8">
-                {dashboardFeatures.map((feature) => (
-                  <div key={feature.title} className="bg-secondary rounded-xl p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-                      <feature.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground text-sm">{feature.title}</p>
-                      <p className="text-xs text-muted-foreground">{feature.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="aspect-video bg-secondary rounded-xl flex items-center justify-center">
-                <div className="text-center">
-                  <Zap className="w-16 h-16 text-primary/50 mx-auto mb-4" />
-                  <p className="text-muted-foreground">Dashboard Preview</p>
-                </div>
-              </div>
-            </div>
+            <DashboardMockup />
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section className="py-24 lg:py-32">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <AnimatedSection>
+              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+                Complete Visibility
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
+                Track every{" "}
+                <span className="gradient-text">touchpoint</span>
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                See the complete journey of every lead—from first contact to closed deal. 
+                Our timeline view shows you exactly when each follow-up happened and what's coming next.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "Visual timeline of all interactions",
+                  "Status tracking for each touchpoint",
+                  "Scheduled follow-ups with reminders",
+                  "AI-suggested next best actions",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2}>
+              <FollowUpTimelineMockup />
+            </AnimatedSection>
+          </div>
         </div>
       </section>
 
