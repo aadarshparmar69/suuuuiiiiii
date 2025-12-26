@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { Zap, Twitter, Linkedin, Instagram, Mail } from "lucide-react";
 
@@ -28,9 +29,9 @@ const socialLinks = [
   { icon: Mail, href: "mailto:hello@followio.com", label: "Email" },
 ];
 
-export const Footer = () => {
+export const Footer = forwardRef<HTMLElement>((props, ref) => {
   return (
-    <footer className="border-t border-border bg-card/30">
+    <footer ref={ref} className="border-t border-border bg-card/30">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Column */}
@@ -124,4 +125,6 @@ export const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";
