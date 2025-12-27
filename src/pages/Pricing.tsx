@@ -60,8 +60,8 @@ const plans = [
 
 const faqs = [
   {
-    question: "What's included in the free trial?",
-    answer: "You get full access to all Professional plan features for 14 days. No credit card required. At the end of your trial, you can choose to continue with any plan.",
+    question: "How do I get started?",
+    answer: "Contact our team for a personalized demo. We'll walk you through the platform and help you find the right plan for your needs.",
   },
   {
     question: "Can I change plans later?",
@@ -105,7 +105,7 @@ const Pricing = () => {
               <span className="gradient-text">pricing</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              Start free for 14 days. No credit card required. Cancel anytime.
+              Simple, transparent pricing. Contact us to get started.
             </p>
 
             {/* Toggle */}
@@ -184,7 +184,7 @@ const Pricing = () => {
                       className="w-full group"
                       size="lg"
                     >
-                      Start Free Trial
+                      Contact Us
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>

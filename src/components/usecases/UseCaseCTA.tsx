@@ -41,13 +41,13 @@ export const UseCaseCTA = () => {
               your follow-ups?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Join thousands of businesses using Follow IQ to close more deals with less effort. Start your free trial today.
+              Join thousands of businesses using Follow IQ to close more deals with less effort. Get in touch today.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/signup">
+              <Link to="/contact">
                 <Button variant="hero" size="lg" className="group min-w-[200px]">
-                  Start Free Trial
+                  Contact Us
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -68,9 +68,9 @@ export const UseCaseCTA = () => {
               className="flex flex-wrap items-center justify-center gap-6 mt-10 pt-8 border-t border-border/30"
             >
               {[
-                "No credit card required",
-                "14-day free trial",
-                "Cancel anytime",
+                "Personalized demo",
+                "Expert consultation",
+                "Quick response",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
