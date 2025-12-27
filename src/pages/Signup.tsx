@@ -10,9 +10,9 @@ import { useToast } from "@/hooks/use-toast";
 import logoImage from "@/assets/follow-iq-logo.png";
 
 const benefits = [
-  "14-day free trial",
-  "No credit card required",
-  "Cancel anytime",
+  "Personalized onboarding",
+  "Dedicated support",
+  "Flexible plans",
 ];
 
 const Signup = () => {
@@ -110,7 +110,7 @@ const Signup = () => {
             Create your account
           </h1>
           <p className="text-muted-foreground mb-8">
-            Start your free 14-day trial today
+            Get started with Follow IQ today
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">

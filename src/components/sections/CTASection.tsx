@@ -30,7 +30,7 @@ export const CTASection = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/contact">
                 <Button variant="hero" size="xl" className="group">
-                  Start Free Trial
+                  Contact Us
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -42,7 +42,7 @@ export const CTASection = () => {
             </div>
 
             <p className="mt-8 text-sm text-muted-foreground">
-              No credit card required • 14-day free trial • Cancel anytime
+              Get in touch • Schedule a demo • Learn more
             </p>
           </div>
         </AnimatedSection>

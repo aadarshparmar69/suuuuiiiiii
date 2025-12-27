@@ -68,7 +68,7 @@ export const PricingSection = () => {
             <span className="gradient-text">pricing</span>
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Start free for 14 days. No credit card required.
+            Simple, transparent pricing. Contact us to get started.
           </p>
 
           {/* Toggle */}
@@ -148,7 +148,7 @@ export const PricingSection = () => {
                     className="w-full group"
                     size="lg"
                   >
-                    Start Free Trial
+                    Contact Us
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>

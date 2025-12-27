@@ -143,7 +143,7 @@ const Product = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/contact">
                 <Button variant="hero" size="lg" className="group">
-                  Start Free Trial
+                  Contact Us
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
