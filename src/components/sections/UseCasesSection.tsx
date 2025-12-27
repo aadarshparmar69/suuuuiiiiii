@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Briefcase, Home, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { StaggeredContainer, StaggeredItem, AnimatedSection } from "@/components/AnimatedSection";
 
 const useCases = [
@@ -23,7 +24,7 @@ const useCases = [
     title: "Real Estate",
     description: "Follow up with buyers and sellers at the perfect moment. Never miss a hot property lead.",
     benefits: ["Listing inquiries", "Open house follow-ups", "Buyer nurturing"],
-    href: "/use-cases#realestate",
+    href: "/use-cases#real-estate",
   },
   {
     icon: Wrench,
@@ -44,17 +45,20 @@ export const UseCasesSection = () => {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
             Built for teams who{" "}
-            <span className="gradient-text">close deals</span>
+            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">close deals</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            FollowIO works for any business that relies on timely follow-up to win customers.
+            Follow IQ works for any business that relies on timely follow-up to win customers.
           </p>
         </AnimatedSection>
 
         <StaggeredContainer className="grid sm:grid-cols-2 gap-6 lg:gap-8">
           {useCases.map((useCase) => (
             <StaggeredItem key={useCase.title}>
-              <div className="glass-card p-8 h-full group hover:border-primary/50 transition-all duration-300">
+              <motion.div 
+                whileHover={{ y: -4 }}
+                className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 h-full group hover:border-primary/50 transition-all duration-300"
+              >
                 <div className="flex items-start gap-4 mb-6">
                   <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                     <useCase.icon className="w-7 h-7 text-primary" />
@@ -84,7 +88,7 @@ export const UseCasesSection = () => {
                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-              </div>
+              </motion.div>
             </StaggeredItem>
           ))}
         </StaggeredContainer>
