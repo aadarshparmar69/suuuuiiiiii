@@ -1,51 +1,53 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AnimatedSection } from "@/components/AnimatedSection";
 
 export const CTASection = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
   return (
-    <section className="py-24 lg:py-32 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/20 rounded-full blur-[150px]" />
-
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <AnimatedSection className="max-w-4xl mx-auto text-center">
-          <div className="glass-card p-12 lg:p-16">
-            <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-8 glow-primary">
-              <Zap className="w-8 h-8 text-primary-foreground" />
+    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden">
+      <div className="container mx-auto px-4 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="relative"
+        >
+          <div className="bg-card border border-border rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-[100px]" />
+            
+            <div className="relative z-10">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-6 max-w-2xl mx-auto">
+                Ready to never lose
+                <br />
+                <span className="gradient-text">a lead again?</span>
+              </h2>
+              
+              <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
+                Join 2,000+ teams using Follow IQ to automate their follow-ups 
+                and close more deals.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/contact">
+                  <Button variant="hero" size="xl" className="group">
+                    Contact Us
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  </Button>
+                </Link>
+                <Link to="/product">
+                  <Button variant="heroOutline" size="xl">
+                    See How It Works
+                  </Button>
+                </Link>
+              </div>
             </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
-              Ready to{" "}
-              <span className="gradient-text">close more deals?</span>
-            </h2>
-
-            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Join 2,000+ businesses using FollowIO to convert leads on autopilot. 
-              Start your free 14-day trial today—no credit card required.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/contact">
-                <Button variant="hero" size="xl" className="group">
-                  Contact Us
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button variant="heroOutline" size="xl">
-                  Book a Demo
-                </Button>
-              </Link>
-            </div>
-
-            <p className="mt-8 text-sm text-muted-foreground">
-              Get in touch • Schedule a demo • Learn more
-            </p>
           </div>
-        </AnimatedSection>
+        </motion.div>
       </div>
     </section>
   );
