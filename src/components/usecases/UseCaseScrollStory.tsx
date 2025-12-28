@@ -99,36 +99,60 @@ const useCases: UseCaseData[] = [
 
 const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: number }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const mockupRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start 0.8", "end 0.2"],
   });
 
-  const [animationStep, setAnimationStep] = useState(0);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [50, 0, 0, -50]);
+  const [animationStep, setAnimationStep] = useState(-1);
+  const [isInView, setIsInView] = useState(false);
 
+  // Smooth step progression based on scroll
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (value) => {
-      if (value > 0.3 && value < 0.7) {
-        const step = Math.min(Math.floor((value - 0.3) / 0.1), 4);
-        setAnimationStep(step);
+      setIsInView(value > 0.1 && value < 0.9);
+      
+      if (value < 0.15) {
+        setAnimationStep(-1);
+      } else if (value < 0.3) {
+        setAnimationStep(0);
+      } else if (value < 0.45) {
+        setAnimationStep(1);
+      } else if (value < 0.6) {
+        setAnimationStep(2);
+      } else if (value < 0.75) {
+        setAnimationStep(3);
+      } else {
+        setAnimationStep(4);
       }
     });
     return () => unsubscribe();
   }, [scrollYProgress]);
 
+  const stepLabels = [
+    "Lead Captured",
+    "Follow-up Scheduled",
+    "AI Message Generated",
+    "WhatsApp Sent",
+    "Deal Won!"
+  ];
+
   return (
     <section
       ref={sectionRef}
       id={useCase.id}
-      className={`py-24 lg:py-32 flex items-center ${
+      className={`py-24 lg:py-32 ${
         index % 2 === 1 ? "bg-card/20" : ""
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
         <motion.div
-          style={{ opacity, y }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-100px" }}
           className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
         >
           {/* Content Side */}
@@ -136,13 +160,17 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
             <motion.div
               initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
             >
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center">
+                <motion.div 
+                  className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center"
+                  whileHover={{ scale: 1.05, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <useCase.icon className="w-7 h-7 text-primary-foreground" />
-                </div>
+                </motion.div>
                 <div>
                   <h2 className="text-2xl lg:text-3xl font-display font-bold text-foreground">
                     {useCase.title}
@@ -152,14 +180,26 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
               </div>
 
               <div className="space-y-6 mb-8">
-                <div className="p-4 rounded-xl bg-destructive/5 border border-destructive/20">
+                <motion.div 
+                  className="p-4 rounded-xl bg-destructive/5 border border-destructive/20"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
                   <p className="text-sm font-medium text-destructive mb-1">The Problem</p>
                   <p className="text-muted-foreground">{useCase.problem}</p>
-                </div>
-                <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
+                </motion.div>
+                <motion.div 
+                  className="p-4 rounded-xl bg-primary/5 border border-primary/20"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
                   <p className="text-sm font-medium text-primary mb-1">The Solution</p>
                   <p className="text-muted-foreground">{useCase.solution}</p>
-                </div>
+                </motion.div>
               </div>
 
               {/* Results */}
@@ -167,11 +207,12 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                 {useCase.results.map((result, i) => (
                   <motion.div
                     key={result.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.4 + i * 0.1, type: "spring", stiffness: 200 }}
                     viewport={{ once: true }}
-                    className="text-center p-4 rounded-xl bg-card/50 border border-border/50"
+                    whileHover={{ scale: 1.05, y: -4 }}
+                    className="text-center p-4 rounded-xl bg-card/50 border border-border/50 cursor-default"
                   >
                     <p className="text-2xl lg:text-3xl font-bold text-primary">{result.value}</p>
                     <p className="text-xs text-muted-foreground">{result.label}</p>
@@ -182,11 +223,11 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
           </div>
 
           {/* Interactive Mockup Side */}
-          <div className={index % 2 === 1 ? "lg:order-1" : ""}>
+          <div ref={mockupRef} className={index % 2 === 1 ? "lg:order-1" : ""}>
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
               className="relative"
             >
@@ -202,9 +243,20 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     </div>
                     <span className="text-sm font-medium text-foreground">{useCase.title}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary">Live</span>
-                  </div>
+                  <motion.div 
+                    className="flex items-center gap-2"
+                    animate={{ opacity: isInView ? 1 : 0.5 }}
+                  >
+                    <motion.span 
+                      className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary"
+                      animate={{ 
+                        scale: isInView ? [1, 1.1, 1] : 1,
+                      }}
+                      transition={{ duration: 1.5, repeat: isInView ? Infinity : 0 }}
+                    >
+                      Live
+                    </motion.span>
+                  </motion.div>
                 </div>
 
                 {/* Content */}
@@ -214,23 +266,45 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     animate={{
                       opacity: animationStep >= 0 ? 1 : 0.3,
                       scale: animationStep === 0 ? 1.02 : 1,
+                      boxShadow: animationStep === 0 ? "0 0 20px hsl(var(--primary) / 0.3)" : "none",
                     }}
-                    className="p-4 rounded-xl bg-background/50 border border-border/50 transition-all"
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="p-4 rounded-xl bg-background/50 border border-border/50"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center">
+                        <motion.div 
+                          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center"
+                          animate={{ 
+                            scale: animationStep === 0 ? [1, 1.1, 1] : 1 
+                          }}
+                          transition={{ duration: 0.6 }}
+                        >
                           <Users className="w-5 h-5 text-primary" />
-                        </div>
+                        </motion.div>
                         <div>
                           <p className="font-medium text-foreground">{useCase.mockupData.leadName}</p>
                           <p className="text-xs text-muted-foreground">{useCase.mockupData.company}</p>
                         </div>
                       </div>
-                      <span className="text-lg font-bold text-primary">{useCase.mockupData.value}</span>
+                      <motion.span 
+                        className="text-lg font-bold text-primary"
+                        animate={{ scale: animationStep === 0 ? [1, 1.1, 1] : 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                      >
+                        {useCase.mockupData.value}
+                      </motion.span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Zap className="w-3 h-3 text-accent" />
+                      <motion.div
+                        animate={{ 
+                          rotate: animationStep === 0 ? [0, 360] : 0,
+                          color: animationStep >= 0 ? "hsl(var(--accent))" : "currentColor"
+                        }}
+                        transition={{ duration: 0.6 }}
+                      >
+                        <Zap className="w-3 h-3" />
+                      </motion.div>
                       <span>Lead entered pipeline</span>
                     </div>
                   </motion.div>
@@ -240,17 +314,34 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     animate={{
                       opacity: animationStep >= 1 ? 1 : 0.3,
                       scale: animationStep === 1 ? 1.02 : 1,
-                      x: animationStep >= 1 ? 0 : 20,
+                      x: animationStep >= 1 ? 0 : 30,
+                      boxShadow: animationStep === 1 ? "0 0 20px hsl(var(--accent) / 0.3)" : "none",
                     }}
-                    className="p-4 rounded-xl bg-accent/5 border border-accent/30 transition-all"
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="p-4 rounded-xl bg-accent/5 border border-accent/30"
                   >
                     <div className="flex items-center gap-3 mb-2">
-                      <Clock className="w-5 h-5 text-accent" />
+                      <motion.div
+                        animate={{ 
+                          rotate: animationStep === 1 ? [0, -10, 10, 0] : 0 
+                        }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <Clock className="w-5 h-5 text-accent" />
+                      </motion.div>
                       <p className="font-medium text-foreground">Follow-up Due</p>
                     </div>
                     <div className="flex items-center justify-between">
                       <p className="text-sm text-muted-foreground">Send personalized message</p>
-                      <span className="text-xs px-2 py-1 rounded-full bg-accent/20 text-accent">In 2 min</span>
+                      <motion.span 
+                        className="text-xs px-2 py-1 rounded-full bg-accent/20 text-accent"
+                        animate={{ 
+                          scale: animationStep === 1 ? [1, 1.1, 1] : 1 
+                        }}
+                        transition={{ duration: 0.8, repeat: animationStep === 1 ? Infinity : 0 }}
+                      >
+                        In 2 min
+                      </motion.span>
                     </div>
                   </motion.div>
 
@@ -259,21 +350,33 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     animate={{
                       opacity: animationStep >= 2 ? 1 : 0.3,
                       scale: animationStep === 2 ? 1.02 : 1,
-                      x: animationStep >= 2 ? 0 : 20,
+                      x: animationStep >= 2 ? 0 : 30,
+                      boxShadow: animationStep === 2 ? "0 0 20px hsl(var(--primary) / 0.3)" : "none",
                     }}
-                    className="p-4 rounded-xl bg-primary/5 border border-primary/30 transition-all"
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="p-4 rounded-xl bg-primary/5 border border-primary/30"
                   >
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                      <motion.div 
+                        className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center"
+                        animate={{ 
+                          scale: animationStep === 2 ? [1, 1.15, 1] : 1,
+                          rotate: animationStep === 2 ? [0, 5, -5, 0] : 0
+                        }}
+                        transition={{ duration: 0.6 }}
+                      >
                         <span className="text-xs font-bold text-primary">AI</span>
-                      </div>
+                      </motion.div>
                       <p className="font-medium text-foreground">AI Message Ready</p>
                     </div>
                     <motion.p
+                      initial={{ opacity: 0, height: 0 }}
                       animate={{
                         opacity: animationStep >= 2 ? 1 : 0,
+                        height: animationStep >= 2 ? "auto" : 0,
                       }}
-                      className="text-sm text-muted-foreground italic"
+                      transition={{ duration: 0.4 }}
+                      className="text-sm text-muted-foreground italic overflow-hidden"
                     >
                       "{useCase.mockupData.message}"
                     </motion.p>
@@ -284,15 +387,29 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     animate={{
                       opacity: animationStep >= 3 ? 1 : 0.3,
                       scale: animationStep === 3 ? 1.02 : 1,
-                      x: animationStep >= 3 ? 0 : 20,
+                      x: animationStep >= 3 ? 0 : 30,
+                      boxShadow: animationStep === 3 ? "0 0 20px hsl(142 70% 45% / 0.3)" : "none",
                     }}
-                    className="p-4 rounded-xl bg-[hsl(142,70%,45%)]/10 border border-[hsl(142,70%,45%)]/30 transition-all"
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="p-4 rounded-xl bg-[hsl(142,70%,45%)]/10 border border-[hsl(142,70%,45%)]/30"
                   >
                     <div className="flex items-center gap-3">
-                      <MessageSquare className="w-5 h-5 text-[hsl(142,70%,45%)]" />
+                      <motion.div
+                        animate={{ 
+                          scale: animationStep === 3 ? [1, 1.2, 1] : 1 
+                        }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <MessageSquare className="w-5 h-5 text-[hsl(142,70%,45%)]" />
+                      </motion.div>
                       <div>
                         <p className="font-medium text-foreground">WhatsApp Message Sent</p>
-                        <p className="text-xs text-muted-foreground">Delivered • Read ✓✓</p>
+                        <motion.p 
+                          className="text-xs text-muted-foreground"
+                          animate={{ opacity: animationStep >= 3 ? 1 : 0 }}
+                        >
+                          Delivered • Read ✓✓
+                        </motion.p>
                       </div>
                     </div>
                   </motion.div>
@@ -302,37 +419,88 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     animate={{
                       opacity: animationStep >= 4 ? 1 : 0.3,
                       scale: animationStep === 4 ? 1.02 : 1,
-                      x: animationStep >= 4 ? 0 : 20,
+                      x: animationStep >= 4 ? 0 : 30,
+                      boxShadow: animationStep === 4 ? "0 0 25px hsl(var(--primary) / 0.4)" : "none",
                     }}
-                    className="p-4 rounded-xl bg-primary/10 border border-primary/40 transition-all"
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="p-4 rounded-xl bg-primary/10 border border-primary/40"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <CheckCircle2 className="w-6 h-6 text-primary" />
+                        <motion.div
+                          animate={{ 
+                            scale: animationStep === 4 ? [1, 1.3, 1] : 1,
+                            rotate: animationStep === 4 ? [0, 10, -10, 0] : 0
+                          }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          <CheckCircle2 className="w-6 h-6 text-primary" />
+                        </motion.div>
                         <div>
                           <p className="font-bold text-foreground">Deal Closed!</p>
                           <p className="text-xs text-muted-foreground">Automatically tracked</p>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <motion.div 
+                        className="text-right"
+                        animate={{ 
+                          scale: animationStep === 4 ? [1, 1.1, 1] : 1 
+                        }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                      >
                         <p className="text-lg font-bold text-primary">{useCase.mockupData.value}</p>
                         <p className="text-xs text-muted-foreground">Won</p>
-                      </div>
+                      </motion.div>
                     </div>
                   </motion.div>
                 </div>
               </div>
 
-              {/* Progress Indicator */}
-              <div className="absolute -right-4 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-2">
-                {[0, 1, 2, 3, 4].map((step) => (
+              {/* Progress Indicator with Labels */}
+              <div className="absolute -right-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-3">
+                {stepLabels.map((label, step) => (
+                  <motion.div
+                    key={step}
+                    className="flex items-center gap-3"
+                    animate={{
+                      opacity: animationStep >= step ? 1 : 0.4,
+                      x: animationStep === step ? 0 : 5,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.div
+                      animate={{
+                        scale: animationStep === step ? 1.5 : 1,
+                        backgroundColor: animationStep >= step ? "hsl(var(--primary))" : "hsl(var(--muted))",
+                      }}
+                      transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
+                      className="w-2.5 h-2.5 rounded-full"
+                    />
+                    <motion.span
+                      animate={{
+                        opacity: animationStep === step ? 1 : 0,
+                        x: animationStep === step ? 0 : -10,
+                      }}
+                      transition={{ duration: 0.2 }}
+                      className="text-xs font-medium text-primary whitespace-nowrap"
+                    >
+                      {label}
+                    </motion.span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Mobile Progress Bar */}
+              <div className="flex lg:hidden justify-center gap-2 mt-6">
+                {stepLabels.map((_, step) => (
                   <motion.div
                     key={step}
                     animate={{
-                      scale: animationStep === step ? 1.5 : 1,
+                      width: animationStep === step ? 24 : 8,
                       backgroundColor: animationStep >= step ? "hsl(var(--primary))" : "hsl(var(--muted))",
                     }}
-                    className="w-2 h-2 rounded-full"
+                    transition={{ duration: 0.3 }}
+                    className="h-2 rounded-full"
                   />
                 ))}
               </div>
