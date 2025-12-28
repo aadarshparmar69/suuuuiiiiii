@@ -456,40 +456,6 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                 </div>
               </div>
 
-              {/* Progress Indicator with Labels */}
-              <div className="absolute -right-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-3">
-                {stepLabels.map((label, step) => (
-                  <motion.div
-                    key={step}
-                    className="flex items-center gap-3"
-                    animate={{
-                      opacity: animationStep >= step ? 1 : 0.4,
-                      x: animationStep === step ? 0 : 5,
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <motion.div
-                      animate={{
-                        scale: animationStep === step ? 1.5 : 1,
-                        backgroundColor: animationStep >= step ? "hsl(var(--primary))" : "hsl(var(--muted))",
-                      }}
-                      transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
-                      className="w-2.5 h-2.5 rounded-full"
-                    />
-                    <motion.span
-                      animate={{
-                        opacity: animationStep === step ? 1 : 0,
-                        x: animationStep === step ? 0 : -10,
-                      }}
-                      transition={{ duration: 0.2 }}
-                      className="text-xs font-medium text-primary whitespace-nowrap"
-                    >
-                      {label}
-                    </motion.span>
-                  </motion.div>
-                ))}
-              </div>
-
               {/* Mobile Progress Bar */}
               <div className="flex lg:hidden justify-center gap-2 mt-6">
                 {stepLabels.map((_, step) => (
@@ -497,10 +463,12 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
                     key={step}
                     animate={{
                       width: animationStep === step ? 24 : 8,
-                      backgroundColor: animationStep >= step ? "hsl(var(--primary))" : "hsl(var(--muted))",
+                      opacity: animationStep >= step ? 1 : 0.3,
                     }}
                     transition={{ duration: 0.3 }}
-                    className="h-2 rounded-full"
+                    className={`h-2 rounded-full transition-colors duration-300 ${
+                      animationStep >= step ? 'bg-primary' : 'bg-muted'
+                    }`}
                   />
                 ))}
               </div>
