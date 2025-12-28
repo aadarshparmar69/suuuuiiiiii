@@ -122,7 +122,7 @@ const UseCaseSection = ({ useCase, index }: { useCase: UseCaseData; index: numbe
     <section
       ref={sectionRef}
       id={useCase.id}
-      className={`min-h-screen py-24 lg:py-0 lg:sticky lg:top-0 flex items-center ${
+      className={`py-24 lg:py-32 flex items-center ${
         index % 2 === 1 ? "bg-card/20" : ""
       }`}
     >
