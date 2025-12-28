@@ -1,7 +1,14 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
-import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import { Linkedin, Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
+
+// Custom X (Twitter) icon component
+const XIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 const footerLinks = {
   product: [
@@ -24,10 +31,9 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@followiq.com", label: "Email" },
+  { icon: XIcon, href: "https://x.com/FollowIQ_", label: "X" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/followiqai/", label: "LinkedIn" },
+  { icon: Instagram, href: "https://www.instagram.com/followiq.site?igsh=amFyOGp5aXZ0dmho", label: "Instagram" },
 ];
 
 export const Footer = forwardRef<HTMLElement>((props, ref) => {
@@ -48,8 +54,10 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-all duration-300"
+                  className="w-11 h-11 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 hover:scale-105 transition-all duration-200"
                 >
                   <social.icon className="w-5 h-5" />
                 </a>
