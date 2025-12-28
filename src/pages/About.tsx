@@ -1,196 +1,210 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Target, Heart, Zap, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
-import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
-import { CTASection } from "@/components/sections/CTASection";
-
-const values = [
-  {
-    icon: Target,
-    title: "Results First",
-    description: "We obsess over outcomes, not features. Every decision we make is guided by one question: will this help our customers close more deals?",
-  },
-  {
-    icon: Heart,
-    title: "Human Touch",
-    description: "AI should enhance human connection, not replace it. Our tools help you be more personal, not less—at scale.",
-  },
-  {
-    icon: Zap,
-    title: "Radical Simplicity",
-    description: "Complexity is the enemy of execution. We build tools that are powerful yet simple enough to use in 5 minutes.",
-  },
-  {
-    icon: Users,
-    title: "Customer Obsession",
-    description: "Our customers are partners. We build with them, for them, and because of them. Their success is our success.",
-  },
-];
+import { motion } from "framer-motion";
 
 const team = [
-  { name: "Aadarsh Parmar", role: "Founder", initial: "AP" },
-  { name: "Sarvesh Rathore", role: "Head of Product", initial: "SR" },
+  { 
+    name: "Aadarsh Parmar", 
+    role: "Founder", 
+    bio: "Building tools that help businesses grow through better customer relationships."
+  },
+  { 
+    name: "Sarvesh Rathore", 
+    role: "Head of Product", 
+    bio: "Obsessed with creating simple solutions for complex problems."
+  },
 ];
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-50px" },
+  transition: { duration: 0.6, ease: "easeOut" as const }
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: {
+    transition: { staggerChildren: 0.1 }
+  },
+  viewport: { once: true }
+};
 
 const About = () => {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
-
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <AnimatedSection>
-              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
-                About Us
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6">
-                We believe follow-up{" "}
-                <span className="gradient-text">shouldn't be hard</span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8">
-                Follow IQ was born from a simple frustration: great opportunities were being lost 
-                to poor follow-up. Not because people didn't care, but because they didn't have 
-                the right tools.
-              </p>
-              <Link to="/contact">
-                <Button variant="hero" size="lg" className="group">
-                  Get in Touch
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.2}>
-              <div className="glass-card p-8">
-                <div className="grid grid-cols-2 gap-6 text-center">
-                  <div>
-                    <div className="text-4xl font-display font-bold text-primary mb-2">2,000+</div>
-                    <p className="text-muted-foreground text-sm">Teams using Follow IQ</p>
-                  </div>
-                  <div>
-                    <div className="text-4xl font-display font-bold text-primary mb-2">10M+</div>
-                    <p className="text-muted-foreground text-sm">Messages sent</p>
-                  </div>
-                  <div>
-                    <div className="text-4xl font-display font-bold text-primary mb-2">$50M+</div>
-                    <p className="text-muted-foreground text-sm">Revenue generated</p>
-                  </div>
-                  <div>
-                    <div className="text-4xl font-display font-bold text-primary mb-2">98%</div>
-                    <p className="text-muted-foreground text-sm">Customer satisfaction</p>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="py-24 lg:py-32 bg-card/30">
-        <div className="container mx-auto px-4 lg:px-8">
-          <AnimatedSection className="max-w-3xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 text-center">
-              Our Story
-            </h2>
-            <div className="prose prose-invert prose-lg mx-auto">
-              <p className="text-muted-foreground">
-                In 2022, our founders were running a marketing agency. They were great at 
-                generating leads, but terrible at following up. Leads would come in, get 
-                lost in spreadsheets, and quietly die.
-              </p>
-              <p className="text-muted-foreground">
-                They tried every CRM, every automation tool, every productivity hack. 
-                Nothing worked. CRMs were too complex. Email automation had low response rates. 
-                Manual follow-up didn't scale.
-              </p>
-              <p className="text-muted-foreground">
-                Then they discovered something: their best-performing leads all had one thing 
-                in common—they'd been contacted via WhatsApp. The open rates were astronomical. 
-                The response rates were 5x higher than email.
-              </p>
-              <p className="text-muted-foreground">
-                So they built Follow IQ: an AI-powered platform that makes WhatsApp follow-up 
-                effortless. Smart enough to personalize every message. Simple enough to set 
-                up in 5 minutes. Powerful enough to 10x your conversions.
-              </p>
-              <p className="text-foreground font-semibold">
-                Today, over 2,000 teams use Follow IQ to never lose a lead again.
-              </p>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-24 lg:py-32">
-        <div className="container mx-auto px-4 lg:px-8">
-          <AnimatedSection className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-6">
-              Our Values
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              The principles that guide everything we build.
+      {/* Hero - Purpose Statement */}
+      <section className="py-20 lg:py-32">
+        <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
+          <motion.div {...fadeInUp} className="text-center">
+            <p className="text-primary font-medium tracking-wide text-sm mb-6">
+              Our Purpose
             </p>
-          </AnimatedSection>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-8">
+              We exist to help businesses{" "}
+              <span className="text-primary">never lose a lead</span> to poor follow-up.
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Every missed follow-up is a missed opportunity. We're here to make sure that never happens.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-          <StaggeredContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value) => (
-              <StaggeredItem key={value.title}>
-                <div className="glass-card p-6 h-full text-center group hover:border-primary/50 transition-all duration-300">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                    <value.icon className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-bold text-foreground mb-2">
-                    {value.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm">
-                    {value.description}
-                  </p>
-                </div>
-              </StaggeredItem>
-            ))}
-          </StaggeredContainer>
+      {/* Why Follow IQ Exists */}
+      <section className="py-20 lg:py-28 border-t border-border/50">
+        <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
+          <motion.div {...fadeInUp}>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-10 text-center">
+              Why Follow IQ Exists
+            </h2>
+          </motion.div>
+
+          <motion.div 
+            {...staggerContainer}
+            className="space-y-8 text-muted-foreground"
+          >
+            <motion.p {...fadeInUp} className="text-lg leading-relaxed">
+              In 2022, we were running a marketing agency. We were good at generating leads—but terrible at following up. Leads came in, got buried in spreadsheets, and quietly disappeared.
+            </motion.p>
+
+            <motion.p {...fadeInUp} className="text-lg leading-relaxed">
+              We tried CRMs. Too complex. Email automation? Low response rates. Manual follow-up? Didn't scale.
+            </motion.p>
+
+            <motion.p {...fadeInUp} className="text-lg leading-relaxed">
+              Then we noticed something: leads contacted via WhatsApp converted at 5× the rate. Open rates were through the roof. Replies came in minutes, not days.
+            </motion.p>
+
+            <motion.p {...fadeInUp} className="text-lg leading-relaxed">
+              So we built Follow IQ—a simple, AI-powered tool that makes WhatsApp follow-up effortless. Personalized at scale. Set up in minutes. No complexity, just results.
+            </motion.p>
+
+            <motion.p {...fadeInUp} className="text-lg text-foreground font-medium">
+              Today, teams rely on Follow IQ to close more deals without the chaos.
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Philosophy */}
+      <section className="py-20 lg:py-28 bg-card/40 border-y border-border/50">
+        <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
+          <motion.div {...fadeInUp} className="text-center mb-14">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">
+              Our Philosophy
+            </h2>
+            <p className="text-muted-foreground">
+              Simplicity over complexity. Always.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            {...staggerContainer}
+            className="grid md:grid-cols-3 gap-8 md:gap-12"
+          >
+            <motion.div {...fadeInUp} className="text-center md:text-left">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto md:mx-0">
+                <span className="text-primary font-display font-bold">01</span>
+              </div>
+              <h3 className="font-display font-semibold text-foreground mb-2">
+                Results over features
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                We don't build features for the sake of it. Every feature exists to help you close more deals.
+              </p>
+            </motion.div>
+
+            <motion.div {...fadeInUp} className="text-center md:text-left">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto md:mx-0">
+                <span className="text-primary font-display font-bold">02</span>
+              </div>
+              <h3 className="font-display font-semibold text-foreground mb-2">
+                Human connection at scale
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                AI should make you more personal, not less. Our tools enhance relationships, not replace them.
+              </p>
+            </motion.div>
+
+            <motion.div {...fadeInUp} className="text-center md:text-left">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto md:mx-0">
+                <span className="text-primary font-display font-bold">03</span>
+              </div>
+              <h3 className="font-display font-semibold text-foreground mb-2">
+                Simple enough to use today
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                If it takes a week to set up, it's too complicated. We build tools you can use in minutes.
+              </p>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Team */}
-      <section className="py-24 lg:py-32 bg-card/30">
-        <div className="container mx-auto px-4 lg:px-8">
-          <AnimatedSection className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-6">
-              Meet the Team
+      <section className="py-20 lg:py-28">
+        <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
+          <motion.div {...fadeInUp} className="text-center mb-14">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">
+              The Team
             </h2>
-            <p className="text-lg text-muted-foreground">
-              A small team of builders obsessed with helping you close more deals.
+            <p className="text-muted-foreground">
+              Small team. Big focus on helping you succeed.
             </p>
-          </AnimatedSection>
+          </motion.div>
 
-          <StaggeredContainer className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <motion.div 
+            {...staggerContainer}
+            className="grid sm:grid-cols-2 gap-6"
+          >
             {team.map((member) => (
-              <StaggeredItem key={member.name}>
-                <div className="glass-card p-6 text-center">
-                  <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4 text-2xl font-display font-bold text-primary">
-                    {member.initial}
-                  </div>
-                  <h3 className="font-display font-bold text-foreground mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {member.role}
-                  </p>
+              <motion.div 
+                key={member.name}
+                {...fadeInUp}
+                className="p-6 rounded-2xl border border-border/50 bg-card/30 hover:border-border transition-colors duration-300"
+              >
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5">
+                  <span className="text-xl font-display font-bold text-primary">
+                    {member.name.split(' ').map(n => n[0]).join('')}
+                  </span>
                 </div>
-              </StaggeredItem>
+                <h3 className="font-display font-bold text-foreground text-lg mb-1">
+                  {member.name}
+                </h3>
+                <p className="text-primary text-sm font-medium mb-3">
+                  {member.role}
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {member.bio}
+                </p>
+              </motion.div>
             ))}
-          </StaggeredContainer>
+          </motion.div>
         </div>
       </section>
 
-      <CTASection />
+      {/* CTA */}
+      <section className="py-20 lg:py-28 border-t border-border/50">
+        <div className="container mx-auto px-4 lg:px-8 max-w-2xl text-center">
+          <motion.div {...fadeInUp}>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">
+              Ready to transform your follow-up?
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Join teams who never lose a lead to poor follow-up again.
+            </p>
+            <Link to="/contact">
+              <Button size="lg" className="group">
+                Get in Touch
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
     </Layout>
   );
 };
