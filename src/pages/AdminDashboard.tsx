@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { Mail, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react";
+import { Mail, Eye, EyeOff, ArrowLeft, Loader2, ShieldAlert } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -39,6 +39,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState<ContactSubmission | null>(null);
 
@@ -50,26 +51,30 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (user) {
-      fetchSubmissions();
+      checkAdminAndFetch();
     }
   }, [user]);
 
-  const fetchSubmissions = async () => {
+  const checkAdminAndFetch = async () => {
     try {
+      // Try to fetch submissions - RLS will block if not admin
       const { data, error } = await supabase
         .from("contact_submissions")
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      setSubmissions(data || []);
+      if (error) {
+        // If RLS blocks, user is not admin
+        console.error("Access denied or error:", error);
+        setIsAdmin(false);
+        setSubmissions([]);
+      } else {
+        setIsAdmin(true);
+        setSubmissions(data || []);
+      }
     } catch (error) {
-      console.error("Error fetching submissions:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load submissions.",
-        variant: "destructive",
-      });
+      console.error("Error:", error);
+      setIsAdmin(false);
     } finally {
       setLoading(false);
     }
@@ -118,6 +123,30 @@ const AdminDashboard = () => {
 
   if (!user) {
     return null;
+  }
+
+  if (isAdmin === false) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-background py-12">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="text-center py-16 bg-card rounded-lg border border-border">
+              <ShieldAlert className="h-16 w-16 mx-auto text-destructive mb-4" />
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Access Denied
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                You don't have permission to view this page. Only admins can access contact submissions.
+              </p>
+              <Button onClick={() => navigate("/")}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Go Home
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
   }
 
   const unreadCount = submissions.filter((s) => !s.is_read).length;
