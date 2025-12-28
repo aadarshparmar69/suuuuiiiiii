@@ -4,41 +4,66 @@ import { Linkedin, Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
 
 // Custom X (Twitter) icon component
-const XIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+const XIcon = ({
+  className
+}: {
+  className?: string;
+}) => <svg viewBox="0 0 24 24" className={className} fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-  </svg>
-);
-
+  </svg>;
 const footerLinks = {
-  product: [
-    { name: "Features", href: "/features" },
-    { name: "How It Works", href: "/product" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Use Cases", href: "/use-cases" },
-  ],
-  company: [
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
-    { name: "Careers", href: "#" },
-    { name: "Blog", href: "#" },
-  ],
-  legal: [
-    { name: "Privacy Policy", href: "/privacy-policy" },
-    { name: "Terms of Service", href: "/terms-of-service" },
-    { name: "Cookie Policy", href: "#" },
-  ],
+  product: [{
+    name: "Features",
+    href: "/features"
+  }, {
+    name: "How It Works",
+    href: "/product"
+  }, {
+    name: "Pricing",
+    href: "/pricing"
+  }, {
+    name: "Use Cases",
+    href: "/use-cases"
+  }],
+  company: [{
+    name: "About",
+    href: "/about"
+  }, {
+    name: "Contact",
+    href: "/contact"
+  }, {
+    name: "Careers",
+    href: "#"
+  }, {
+    name: "Blog",
+    href: "#"
+  }],
+  legal: [{
+    name: "Privacy Policy",
+    href: "/privacy-policy"
+  }, {
+    name: "Terms of Service",
+    href: "/terms-of-service"
+  }, {
+    name: "Cookie Policy",
+    href: "#"
+  }]
 };
-
-const socialLinks = [
-  { icon: XIcon, href: "https://x.com/FollowIQ_", label: "X" },
-  { icon: Linkedin, href: "https://www.linkedin.com/company/followiqai/", label: "LinkedIn" },
-  { icon: Instagram, href: "https://www.instagram.com/followiq.site?igsh=amFyOGp5aXZ0dmho", label: "Instagram" },
-];
-
+const socialLinks = [{
+  icon: XIcon,
+  href: "https://x.com/FollowIQ_",
+  label: "X"
+}, {
+  icon: Linkedin,
+  href: "https://www.linkedin.com/company/followiqai/",
+  label: "LinkedIn"
+}, {
+  icon: Instagram,
+  href: "https://www.instagram.com/followiq.site?igsh=amFyOGp5aXZ0dmho",
+  label: "Instagram"
+}];
 export const Footer = forwardRef<HTMLElement>((props, ref) => {
-  return (
-    <footer ref={ref} className="border-t border-border bg-card/30">
+  return <footer ref={ref} className="border-t border-border bg-card/30">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Column */}
@@ -50,18 +75,9 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
               AI-powered follow-up automation. Never lose a lead again.
             </p>
             <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="w-11 h-11 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 hover:scale-105 transition-all duration-200"
-                >
+              {socialLinks.map(social => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-11 h-11 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 hover:scale-105 transition-all duration-200">
                   <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
@@ -69,16 +85,11 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
           <div>
             <h3 className="font-display font-semibold text-foreground mb-4">Product</h3>
             <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                  >
+              {footerLinks.product.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -86,16 +97,11 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
           <div>
             <h3 className="font-display font-semibold text-foreground mb-4">Company</h3>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                  >
+              {footerLinks.company.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -103,16 +109,11 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
           <div>
             <h3 className="font-display font-semibold text-foreground mb-4">Legal</h3>
             <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                  >
+              {footerLinks.legal.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
         </div>
@@ -123,12 +124,10 @@ export const Footer = forwardRef<HTMLElement>((props, ref) => {
             © {new Date().getFullYear()} Follow IQ. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm">
-            Made with ❤️ for sales teams everywhere
+            ​
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 });
-
 Footer.displayName = "Footer";
