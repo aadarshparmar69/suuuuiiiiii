@@ -228,11 +228,13 @@ const Contact = () => {
                     Book a Demo
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4">
-                    Want to see FollowIO in action? Schedule a personalized demo with our team.
+                    Want to see Follow IQ in action? Schedule a personalized demo with our team.
                   </p>
-                  <Button variant="outline" className="w-full">
-                    Schedule Demo
-                  </Button>
+                  <a href="https://followiq.setmore.com" target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="w-full">
+                      Schedule Demo
+                    </Button>
+                  </a>
                 </div>
               </div>
             </AnimatedSection>

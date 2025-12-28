@@ -51,12 +51,12 @@ export const UseCaseCTA = () => {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link to="/product">
+              <a href="https://followiq.setmore.com" target="_blank" rel="noopener noreferrer">
                 <Button variant="heroOutline" size="lg" className="group min-w-[200px]">
                   <Play className="w-4 h-4" />
-                  Watch Demo
+                  Book Demo
                 </Button>
-              </Link>
+              </a>
             </div>
 
             {/* Trust Indicators */}
