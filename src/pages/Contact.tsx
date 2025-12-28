@@ -9,9 +9,9 @@ import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components
 import { useToast } from "@/hooks/use-toast";
 
 const contactInfo = [
-  { icon: Mail, label: "Email", value: "hello@followio.com", href: "mailto:hello@followio.com" },
-  { icon: Phone, label: "Phone", value: "+1 (555) 123-4567", href: "tel:+15551234567" },
-  { icon: MapPin, label: "Office", value: "San Francisco, CA", href: "#" },
+  { icon: Mail, label: "Email", value: "contact@followiq.site", href: "mailto:contact@followiq.site" },
+  { icon: Phone, label: "Phone", value: "+91 901-593-1203", href: "tel:+919015931203" },
+  { icon: MapPin, label: "Office", value: "Sector 48-C Chandigarh, Chandigarh 160047", href: "#" },
 ];
 
 const Contact = () => {
