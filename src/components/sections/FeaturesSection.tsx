@@ -75,9 +75,7 @@ export const FeaturesSection = () => {
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-            <span className="w-8 h-px bg-primary" />
             Features
-            <span className="w-8 h-px bg-primary" />
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
             Everything you need to
@@ -97,14 +95,14 @@ export const FeaturesSection = () => {
               key={feature.title}
               initial={{ opacity: 0, y: 25 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1 + index * 0.06, duration: 0.5 }}
+              transition={{ delay: 0.05 + index * 0.05, duration: 0.5 }}
               className="group"
             >
-              <div className="h-full p-6 bg-card border border-border rounded-xl transition-all duration-200 hover:border-primary/40 hover:-translate-y-0.5">
-                <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
-                  <feature.icon className="w-5 h-5 text-primary" />
+              <div className="h-full p-6 bg-card border border-border rounded-2xl transition-all duration-300 hover:border-primary/40 hover:-translate-y-1">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+                  <feature.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-base font-display font-bold text-foreground mb-2">
+                <h3 className="text-lg font-display font-bold text-foreground mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">

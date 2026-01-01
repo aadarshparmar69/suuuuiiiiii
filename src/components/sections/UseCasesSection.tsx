@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Briefcase, Home, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { StaggeredContainer, StaggeredItem, AnimatedSection } from "@/components/AnimatedSection";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const useCases = [
   {
@@ -36,31 +36,45 @@ const useCases = [
 ];
 
 export const UseCasesSection = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
   return (
-    <section className="py-24 lg:py-32 relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
-        <AnimatedSection className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
             Use Cases
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
             Built for teams who{" "}
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">close deals</span>
+            <span className="gradient-text">close deals</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             Follow IQ works for any business that relies on timely follow-up to win customers.
           </p>
-        </AnimatedSection>
+        </motion.div>
 
-        <StaggeredContainer className="grid sm:grid-cols-2 gap-6 lg:gap-8">
-          {useCases.map((useCase) => (
-            <StaggeredItem key={useCase.title}>
+        <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
+          {useCases.map((useCase, index) => (
+            <motion.div
+              key={useCase.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
+            >
               <motion.div 
                 whileHover={{ y: -4 }}
-                className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 h-full group hover:border-primary/50 transition-all duration-300"
+                transition={{ duration: 0.2 }}
+                className="bg-card border border-border rounded-2xl p-8 h-full group hover:border-primary/40 transition-all duration-300"
               >
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
                     <useCase.icon className="w-7 h-7 text-primary" />
                   </div>
                   <div>
@@ -83,23 +97,28 @@ export const UseCasesSection = () => {
                 </ul>
 
                 <Link to={useCase.href}>
-                  <Button variant="ghost" size="sm" className="group/btn text-primary hover:text-primary">
+                  <Button variant="ghost" size="sm" className="group/btn text-primary hover:text-primary p-0">
                     Learn more
                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
               </motion.div>
-            </StaggeredItem>
+            </motion.div>
           ))}
-        </StaggeredContainer>
+        </div>
 
-        <AnimatedSection delay={0.4} className="text-center mt-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="text-center mt-12"
+        >
           <Link to="/use-cases">
             <Button variant="heroOutline" size="lg">
               View All Use Cases
             </Button>
           </Link>
-        </AnimatedSection>
+        </motion.div>
       </div>
     </section>
   );

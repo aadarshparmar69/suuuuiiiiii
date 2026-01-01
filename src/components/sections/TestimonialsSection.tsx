@@ -56,9 +56,7 @@ export const TestimonialsSection = () => {
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-            <span className="w-8 h-px bg-primary" />
             Testimonials
-            <span className="w-8 h-px bg-primary" />
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
             Loved by{" "}
@@ -67,15 +65,15 @@ export const TestimonialsSection = () => {
         </motion.div>
 
         {/* Testimonials Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 25 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1 + index * 0.08, duration: 0.5 }}
+              transition={{ delay: 0.08 + index * 0.06, duration: 0.5 }}
             >
-              <div className="h-full p-6 bg-card border border-border rounded-xl flex flex-col">
+              <div className="h-full p-6 bg-card border border-border rounded-2xl flex flex-col hover:border-primary/30 transition-all duration-300">
                 {/* Stars */}
                 <div className="flex gap-0.5 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
@@ -90,7 +88,7 @@ export const TestimonialsSection = () => {
 
                 {/* Author */}
                 <div className="flex items-center gap-3 pt-4 border-t border-border/50">
-                  <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-muted-foreground">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
                     {testimonial.author.split(" ").map(n => n[0]).join("")}
                   </div>
                   <div>
