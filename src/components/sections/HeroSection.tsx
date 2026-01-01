@@ -1,55 +1,124 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Floating particle component
+const FloatingParticle = ({ 
+  size, 
+  initialX, 
+  initialY, 
+  duration, 
+  delay 
+}: { 
+  size: number; 
+  initialX: number; 
+  initialY: number; 
+  duration: number; 
+  delay: number;
+}) => (
+  <motion.div
+    className="absolute rounded-full bg-primary/[0.08]"
+    style={{
+      width: size,
+      height: size,
+      left: `${initialX}%`,
+      top: `${initialY}%`,
+    }}
+    initial={{ opacity: 0, y: 0 }}
+    animate={{ 
+      opacity: [0, 0.6, 0.4, 0.6, 0],
+      y: [-20, -60, -40, -80, -100],
+      x: [0, 10, -5, 15, 0],
+    }}
+    transition={{
+      duration,
+      delay,
+      repeat: Infinity,
+      ease: "easeInOut",
+    }}
+  />
+);
+
 export const HeroSection = () => {
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true });
+
+  // Generate particles with stable positions
+  const particles = useMemo(() => 
+    Array.from({ length: 12 }, (_, i) => ({
+      id: i,
+      size: 4 + Math.random() * 6,
+      initialX: 10 + (i * 7) + Math.random() * 5,
+      initialY: 30 + Math.random() * 50,
+      duration: 12 + Math.random() * 8,
+      delay: i * 1.5,
+    })), []
+  );
 
   return (
     <section
       ref={heroRef}
       className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden"
     >
-      {/* Abstract Glowing Orb Background */}
+      {/* Refined Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Main gradient orb */}
+        {/* Soft ambient gradient - no harsh glows */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 2, ease: "easeOut" }}
+          className="absolute inset-0"
         >
-          <div className="relative w-[600px] h-[600px] md:w-[800px] md:h-[800px]">
-            {/* Primary glow */}
-            <div className="absolute inset-0 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
-            {/* Secondary accent glow */}
-            <div className="absolute inset-[20%] bg-primary/30 rounded-full blur-[80px]" />
-            {/* Inner core */}
-            <motion.div
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 180, 360]
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="absolute inset-[35%] bg-gradient-to-br from-primary/40 to-accent/20 rounded-full blur-[60px]"
-            />
-          </div>
+          {/* Primary soft gradient */}
+          <div 
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[70%]"
+            style={{
+              background: `radial-gradient(ellipse 80% 60% at 50% 20%, hsl(var(--primary) / 0.12) 0%, transparent 70%)`,
+            }}
+          />
+          
+          {/* Secondary subtle accent */}
+          <motion.div 
+            className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] md:w-[900px] md:h-[600px]"
+            animate={{
+              scale: [1, 1.02, 1],
+              opacity: [0.8, 1, 0.8],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              background: `radial-gradient(ellipse at center, hsl(var(--primary) / 0.08) 0%, transparent 60%)`,
+            }}
+          />
         </motion.div>
 
-        {/* Subtle grid overlay */}
+        {/* Floating particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {particles.map((particle) => (
+            <FloatingParticle key={particle.id} {...particle} />
+          ))}
+        </div>
+
+        {/* Subtle noise texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.025] mix-blend-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+
+        {/* Very subtle grid */}
         <div
-          className="absolute inset-0 opacity-[0.015]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
                              linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
-            backgroundSize: "100px 100px",
+            backgroundSize: "80px 80px",
           }}
         />
       </div>
