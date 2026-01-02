@@ -34,47 +34,67 @@ export const HowItWorksSection = () => {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden bg-card/30">
+    <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden bg-card/30">
+      {/* Top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-16"
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-center max-w-2xl mx-auto mb-20"
         >
-          <span className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-4">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="inline-flex items-center justify-center gap-2 text-sm font-bold text-primary uppercase tracking-widest mb-5"
+          >
             How It Works
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight">
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
             Four steps to
             <br />
             <span className="gradient-text">automated growth</span>
           </h2>
+          <p className="text-lg text-muted-foreground">
+            Get started in minutes, not days
+          </p>
         </motion.div>
 
         {/* Steps */}
         <div className="relative">
           {/* Connection Line - Desktop */}
-          <div className="hidden lg:block absolute top-[52px] left-[calc(12.5%+24px)] right-[calc(12.5%+24px)] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            className="hidden lg:block absolute top-[60px] left-[calc(12.5%+32px)] right-[calc(12.5%+32px)] h-px bg-gradient-to-r from-primary/50 via-primary/30 to-primary/50 origin-left" 
+          />
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
             {steps.map((item, index) => (
               <motion.div
                 key={item.step}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.15 + index * 0.1, duration: 0.6 }}
+                transition={{ 
+                  delay: 0.2 + index * 0.15, 
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
                 className="relative"
               >
                 {/* Step Icon */}
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                  className={`w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center relative z-10 shadow-lg ${
+                  whileHover={{ scale: 1.08, y: -4 }}
+                  transition={{ duration: 0.3 }}
+                  className={`w-16 h-16 rounded-2xl mx-auto mb-7 flex items-center justify-center relative z-10 shadow-lg transition-shadow hover:shadow-xl ${
                     index === steps.length - 1 
-                      ? "bg-gradient-to-br from-accent to-accent/80 text-accent-foreground" 
-                      : "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground"
+                      ? "bg-gradient-to-br from-accent to-accent/80 text-accent-foreground shadow-accent/20" 
+                      : "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-primary/20"
                   }`}
                 >
                   <item.icon className="w-7 h-7" />
@@ -82,13 +102,18 @@ export const HowItWorksSection = () => {
 
                 {/* Content */}
                 <div className="text-center">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                  <motion.span 
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { opacity: 1 } : {}}
+                    transition={{ delay: 0.4 + index * 0.15, duration: 0.4 }}
+                    className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest"
+                  >
                     Step {item.step}
-                  </span>
-                  <h3 className="text-xl font-display font-bold text-foreground mt-2 mb-3">
+                  </motion.span>
+                  <h3 className="text-xl font-display font-bold text-foreground mt-3 mb-4">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-[240px] mx-auto">
                     {item.description}
                   </p>
                 </div>
