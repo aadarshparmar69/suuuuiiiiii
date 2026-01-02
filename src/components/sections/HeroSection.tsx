@@ -127,9 +127,9 @@ export const HeroSection = () => {
           duration: 0.7,
           delay: 0.3
         }} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight mb-6">
-            Intelligent Follow-ups for
+            Never Lose a Lead Again.
             <br />
-            <span className="gradient-text">Modern Sales Teams.</span>
+            <span className="gradient-text">WhatsApp-First AI Follow-ups.</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -143,7 +143,7 @@ export const HeroSection = () => {
           duration: 0.7,
           delay: 0.4
         }} className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-            Follow IQ brings AI automation to your fingertips & streamlines your lead follow-ups.
+            AI ensures every follow-up happens at the right time with the right message — via WhatsApp, where your leads actually respond.
           </motion.p>
 
           {/* CTA Buttons */}
