@@ -40,22 +40,27 @@ export const UseCasesSection = () => {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden">
+    <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="inline-block text-primary font-bold text-sm uppercase tracking-widest mb-5"
+          >
             Use Cases
-          </span>
+          </motion.span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
             Built for teams who{" "}
             <span className="gradient-text">close deals</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground leading-relaxed">
             Follow IQ works for any business that relies on timely follow-up to win customers.
           </p>
         </motion.div>
@@ -64,42 +69,58 @@ export const UseCasesSection = () => {
           {useCases.map((useCase, index) => (
             <motion.div
               key={useCase.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                duration: 0.6, 
+                delay: 0.1 + index * 0.1,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
             >
               <motion.div 
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="bg-card border border-border rounded-2xl p-8 h-full group hover:border-primary/40 transition-all duration-300"
+                whileHover={{ y: -6, borderColor: "hsl(var(--primary) / 0.4)" }}
+                transition={{ duration: 0.3 }}
+                className="bg-card border border-border rounded-2xl p-8 h-full group transition-all duration-300"
               >
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
+                <div className="flex items-start gap-5 mb-6">
+                  <motion.div 
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors"
+                  >
                     <useCase.icon className="w-7 h-7 text-primary" />
-                  </div>
+                  </motion.div>
                   <div>
                     <h3 className="text-xl font-display font-bold text-foreground mb-2">
                       {useCase.title}
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground leading-relaxed">
                       {useCase.description}
                     </p>
                   </div>
                 </div>
 
-                <ul className="space-y-2 mb-6">
-                  {useCase.benefits.map((benefit) => (
-                    <li key={benefit} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <ul className="space-y-2.5 mb-6">
+                  {useCase.benefits.map((benefit, i) => (
+                    <motion.li 
+                      key={benefit} 
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + i * 0.1, duration: 0.4 }}
+                      className="flex items-center gap-3 text-sm text-muted-foreground"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                       {benefit}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
 
                 <Link to={useCase.href}>
-                  <Button variant="ghost" size="sm" className="group/btn text-primary hover:text-primary p-0">
+                  <Button variant="ghost" size="sm" className="group/btn text-primary hover:text-primary hover:bg-primary/10 p-0">
                     Learn more
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
               </motion.div>
@@ -108,14 +129,16 @@ export const UseCasesSection = () => {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-12"
+          className="text-center mt-14"
         >
           <Link to="/use-cases">
-            <Button variant="heroOutline" size="lg">
+            <Button variant="heroOutline" size="lg" className="group">
               View All Use Cases
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
         </motion.div>

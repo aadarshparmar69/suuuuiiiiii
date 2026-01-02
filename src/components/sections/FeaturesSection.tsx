@@ -65,50 +65,71 @@ export const FeaturesSection = () => {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden bg-card/30">
+    <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden bg-card/30">
+      {/* Top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
-          <span className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-4">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="inline-flex items-center justify-center gap-2 text-sm font-bold text-primary uppercase tracking-widest mb-5"
+          >
             Features
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-5">
             Everything you need to
             <br />
             <span className="gradient-text">close more deals</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground leading-relaxed">
             Powerful features that work together to turn your follow-up process 
             into a conversion machine.
           </p>
         </motion.div>
 
         {/* Features Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 25 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.05 + index * 0.05, duration: 0.5 }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                delay: 0.05 + index * 0.06, 
+                duration: 0.5,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
               className="group"
             >
-              <div className="h-full p-6 bg-card border border-border rounded-2xl transition-all duration-300 hover:border-primary/40 hover:-translate-y-1">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+              <motion.div 
+                whileHover={{ y: -6, borderColor: "hsl(var(--primary) / 0.4)" }}
+                transition={{ duration: 0.3 }}
+                className="h-full p-7 bg-card border border-border rounded-2xl transition-all duration-300"
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-13 h-13 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/15 transition-colors"
+                >
                   <feature.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-display font-bold text-foreground mb-2">
+                </motion.div>
+                <h3 className="text-lg font-display font-bold text-foreground mb-3">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
