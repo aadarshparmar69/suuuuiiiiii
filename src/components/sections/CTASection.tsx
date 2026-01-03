@@ -65,7 +65,7 @@ export const CTASection = () => {
               >
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-semibold text-primary">
                   <Sparkles className="w-4 h-4" />
-                  Start Your Free Trial
+                  Let's Talk
                 </span>
               </motion.div>
 
@@ -87,7 +87,7 @@ export const CTASection = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-lg md:text-xl text-muted-foreground mb-12 max-w-xl mx-auto leading-relaxed"
               >
-                Join 2,000+ teams using Follow IQ to automate their follow-ups 
+                Join 50+ companies using Follow IQ to automate their follow-ups 
                 and close more deals.
               </motion.p>
               
@@ -100,7 +100,7 @@ export const CTASection = () => {
               >
                 <Link to="/contact">
                   <Button variant="hero" size="xl" className="group w-full sm:w-auto shadow-lg shadow-primary/25">
-                    Get Started Free
+                    Contact Us
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </Button>
                 </Link>
@@ -123,8 +123,8 @@ export const CTASection = () => {
                 className="flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground"
               >
                 {[
-                  "Free 14-day trial",
-                  "No credit card required",
+                  "WhatsApp Integration",
+                  "AI-Powered Follow-ups",
                   "Setup in 5 minutes"
                 ].map((item, i) => (
                   <motion.span 

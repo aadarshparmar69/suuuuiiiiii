@@ -183,7 +183,7 @@ export const HeroSection = () => {
           >
             <Link to="/contact">
               <Button variant="hero" size="xl" className="w-full sm:w-auto group shadow-lg shadow-primary/20">
-                Start Free Trial
+                Contact Us
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </Link>
@@ -204,7 +204,7 @@ export const HeroSection = () => {
           >
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              No credit card required
+              WhatsApp Integration
             </span>
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -212,7 +212,7 @@ export const HeroSection = () => {
             </span>
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              Cancel anytime
+              AI-Powered
             </span>
           </motion.div>
 
