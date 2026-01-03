@@ -69,7 +69,7 @@ export const TestimonialsSection = () => {
           </motion.span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
             Loved by{" "}
-            <span className="gradient-text">2,000+ teams</span>
+            <span className="gradient-text">50+ teams</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             See what sales teams are saying about Follow IQ
