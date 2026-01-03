@@ -79,7 +79,7 @@ const Signup = () => {
             Start converting more leads today
           </h2>
           <p className="text-muted-foreground max-w-md mb-8">
-            Join 2,000+ businesses using Follow IQ to automate their follow-ups.
+            Join 50+ businesses using Follow IQ to automate their follow-ups.
           </p>
           <ul className="space-y-3">
             {benefits.map((benefit) => (

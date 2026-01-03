@@ -225,7 +225,7 @@ export const HeroSection = () => {
           >
             <AnimatedStat value="340%" label="More Conversions" delay={0.9} />
             <AnimatedStat value="3x" label="Faster Response" delay={1.0} />
-            <AnimatedStat value="2K+" label="Happy Teams" delay={1.1} />
+            <AnimatedStat value="50+" label="Happy Teams" delay={1.1} />
           </motion.div>
         </div>
       </motion.div>
