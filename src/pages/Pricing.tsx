@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Check, ArrowRight, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
-import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
 
 const plans = [
   {
@@ -87,29 +86,69 @@ const faqs = [
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(true);
+  const heroRef = useRef(null);
+  const heroInView = useInView(heroRef, { once: true });
+  const { scrollYProgress } = useScroll();
+  
+  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
     <Layout>
+      {/* Progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
+
       {/* Hero */}
-      <section className="py-24 lg:py-32 relative overflow-hidden">
+      <section ref={heroRef} className="py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-primary/10 rounded-full blur-[150px]" />
+        <motion.div 
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-primary/10 rounded-full blur-[150px]" 
+        />
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <AnimatedSection className="text-center max-w-4xl mx-auto">
-            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
+            >
               Pricing
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6">
+            </motion.span>
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6"
+            >
               Simple, transparent{" "}
               <span className="gradient-text">pricing</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
+            >
               Simple, transparent pricing. Contact us to get started.
-            </p>
+            </motion.p>
 
             {/* Toggle */}
-            <div className="inline-flex items-center gap-4 p-1.5 bg-secondary rounded-full">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="inline-flex items-center gap-4 p-1.5 bg-secondary rounded-full"
+            >
               <button
                 onClick={() => setIsYearly(false)}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
@@ -135,113 +174,74 @@ const Pricing = () => {
                   Save 20%
                 </span>
               </button>
-            </div>
-          </AnimatedSection>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing Cards */}
       <section className="py-16">
         <div className="container mx-auto px-4 lg:px-8">
-          <StaggeredContainer className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan) => (
-              <StaggeredItem key={plan.name}>
-                <motion.div
-                  whileHover={{ y: -8 }}
-                  transition={{ duration: 0.3 }}
-                  className={`glass-card p-8 h-full flex flex-col relative ${
-                    plan.popular ? "border-primary glow-primary" : ""
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full">
-                      Most Popular
-                    </div>
-                  )}
-
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-display font-bold text-foreground mb-2">
-                      {plan.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{plan.description}</p>
-                  </div>
-
-                  <div className="mb-8">
-                    <span className="text-5xl font-display font-bold text-foreground">
-                      ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
-                    </span>
-                    <span className="text-muted-foreground">/month</span>
-                    {isYearly && (
-                      <p className="text-sm text-primary mt-1">
-                        Billed annually (${plan.yearlyPrice * 12}/year)
-                      </p>
-                    )}
-                  </div>
-
-                  <Link to="/contact" className="block mb-8">
-                    <Button 
-                      variant={plan.popular ? "hero" : "outline"} 
-                      className="w-full group"
-                      size="lg"
-                    >
-                      Contact Us
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-
-                  <ul className="space-y-3 flex-1">
-                    {plan.features.map((feature) => (
-                      <li key={feature.name} className="flex items-start gap-3">
-                        <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                          feature.included ? "bg-primary/20" : "bg-secondary"
-                        }`}>
-                          <Check className={`w-3 h-3 ${
-                            feature.included ? "text-primary" : "text-muted-foreground/50"
-                          }`} />
-                        </div>
-                        <span className={`text-sm ${
-                          feature.included ? "text-foreground" : "text-muted-foreground/50"
-                        }`}>
-                          {feature.name}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              </StaggeredItem>
+          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {plans.map((plan, index) => (
+              <PricingCard 
+                key={plan.name} 
+                plan={plan} 
+                index={index} 
+                isYearly={isYearly} 
+              />
             ))}
-          </StaggeredContainer>
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="py-24 lg:py-32 bg-card/30">
         <div className="container mx-auto px-4 lg:px-8">
-          <AnimatedSection className="text-center max-w-3xl mx-auto mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center max-w-3xl mx-auto mb-16"
+          >
             <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
               FAQ
             </span>
             <h2 className="text-3xl sm:text-4xl font-display font-bold mb-6">
               Frequently asked questions
             </h2>
-          </AnimatedSection>
+          </motion.div>
 
-          <div className="max-w-3xl mx-auto">
-            <StaggeredContainer className="space-y-4">
-              {faqs.map((faq) => (
-                <StaggeredItem key={faq.question}>
-                  <div className="glass-card p-6">
-                    <div className="flex items-start gap-4">
-                      <HelpCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-2">{faq.question}</h3>
-                        <p className="text-muted-foreground text-sm">{faq.answer}</p>
-                      </div>
-                    </div>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs.map((faq, index) => (
+              <motion.div
+                key={faq.question}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+                className="glass-card p-6"
+              >
+                <div className="flex items-start gap-4">
+                  <motion.div
+                    whileHover={{ rotate: 15 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <HelpCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  </motion.div>
+                  <div>
+                    <h3 className="font-semibold text-foreground mb-2">{faq.question}</h3>
+                    <p className="text-muted-foreground text-sm">{faq.answer}</p>
                   </div>
-                </StaggeredItem>
-              ))}
-            </StaggeredContainer>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -249,26 +249,161 @@ const Pricing = () => {
       {/* Enterprise CTA */}
       <section className="py-24 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
-          <AnimatedSection className="max-w-4xl mx-auto text-center">
-            <div className="glass-card p-12">
-              <h2 className="text-3xl font-display font-bold mb-4">
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <motion.div 
+              className="glass-card p-12"
+              whileHover={{ scale: 1.01 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-3xl font-display font-bold mb-4"
+              >
                 Need a custom solution?
-              </h2>
-              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="text-muted-foreground mb-8 max-w-xl mx-auto"
+              >
                 Enterprise customers get custom pricing, dedicated support, and tailored 
                 features. Let's talk about what you need.
-              </p>
-              <Link to="/contact">
-                <Button variant="hero" size="lg" className="group">
-                  Contact Sales
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
-          </AnimatedSection>
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+              >
+                <Link to="/contact">
+                  <Button variant="hero" size="lg" className="group">
+                    Contact Sales
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </Layout>
+  );
+};
+
+// Pricing Card Component
+const PricingCard = ({ 
+  plan, 
+  index, 
+  isYearly 
+}: { 
+  plan: typeof plans[0]; 
+  index: number;
+  isYearly: boolean;
+}) => {
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true, margin: "-50px" });
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ 
+        duration: 0.6, 
+        delay: index * 0.15,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+      whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      className={`glass-card p-8 h-full flex flex-col relative ${
+        plan.popular ? "border-primary glow-primary" : ""
+      }`}
+    >
+      {plan.popular && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full"
+        >
+          Most Popular
+        </motion.div>
+      )}
+
+      <div className="mb-6">
+        <h3 className="text-2xl font-display font-bold text-foreground mb-2">
+          {plan.name}
+        </h3>
+        <p className="text-sm text-muted-foreground">{plan.description}</p>
+      </div>
+
+      <div className="mb-8">
+        <motion.span 
+          key={isYearly ? "yearly" : "monthly"}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-5xl font-display font-bold text-foreground"
+        >
+          ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+        </motion.span>
+        <span className="text-muted-foreground">/month</span>
+        {isYearly && (
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-primary mt-1"
+          >
+            Billed annually (${plan.yearlyPrice * 12}/year)
+          </motion.p>
+        )}
+      </div>
+
+      <Link to="/contact" className="block mb-8">
+        <Button 
+          variant={plan.popular ? "hero" : "outline"} 
+          className="w-full group"
+          size="lg"
+        >
+          Contact Us
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      </Link>
+
+      <ul className="space-y-3 flex-1">
+        {plan.features.map((feature, featureIndex) => (
+          <motion.li 
+            key={feature.name} 
+            initial={{ opacity: 0, x: -10 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.4 + featureIndex * 0.05 }}
+            className="flex items-start gap-3"
+          >
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+              feature.included ? "bg-primary/20" : "bg-secondary"
+            }`}>
+              <Check className={`w-3 h-3 ${
+                feature.included ? "text-primary" : "text-muted-foreground/50"
+              }`} />
+            </div>
+            <span className={`text-sm ${
+              feature.included ? "text-foreground" : "text-muted-foreground/50"
+            }`}>
+              {feature.name}
+            </span>
+          </motion.li>
+        ))}
+      </ul>
+    </motion.div>
   );
 };
 

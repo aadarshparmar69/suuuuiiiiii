@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { 
   Brain, 
   MessageCircle, 
@@ -17,7 +19,6 @@ import {
   Database
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { LeadPipelineDemo } from "@/components/demos/LeadPipelineDemo";
 import { FollowUpTimelineDemo } from "@/components/demos/FollowUpTimelineDemo";
@@ -25,6 +26,7 @@ import { AIMessageDemo } from "@/components/demos/AIMessageDemo";
 import { WhatsAppScheduleDemo } from "@/components/demos/WhatsAppScheduleDemo";
 import { TeamCollaborationDemo } from "@/components/demos/TeamCollaborationDemo";
 import { PerformanceInsightsDemo } from "@/components/demos/PerformanceInsightsDemo";
+import { ScrollReveal, StaggeredReveal, StaggeredItem } from "@/components/ScrollReveal";
 
 const featureCategories = [
   {
@@ -211,83 +213,183 @@ const renderDemo = (demoType: string) => {
 };
 
 const Features = () => {
+  const heroRef = useRef(null);
+  const heroInView = useInView(heroRef, { once: true });
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
     <Layout>
+      {/* Progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
+
       {/* Hero */}
-      <section className="py-24 lg:py-32 relative overflow-hidden">
+      <section ref={heroRef} className="py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
+        <motion.div 
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" 
+        />
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <AnimatedSection className="text-center max-w-4xl mx-auto">
-            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
+            >
               Features
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6">
+            </motion.span>
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6"
+            >
               Powerful features for{" "}
               <span className="gradient-text">powerful results</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto"
+            >
               Everything you need to automate follow-ups, engage leads, 
               and close more deals—all in one platform.
-            </p>
-          </AnimatedSection>
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
       {/* Feature Categories with Interactive Demos */}
       {featureCategories.map((category, categoryIndex) => (
-        <section 
+        <FeatureCategory 
           key={category.title} 
-          className={`py-16 lg:py-24 ${categoryIndex % 2 === 1 ? "bg-card/30" : ""}`}
-        >
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${
-              categoryIndex % 2 === 1 ? "lg:flex-row-reverse" : ""
-            }`}>
-              {/* Content side */}
-              <div className={categoryIndex % 2 === 1 ? "lg:order-2" : ""}>
-                <AnimatedSection className="mb-8">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-4">
-                    {category.title}
-                  </h2>
-                  <p className="text-muted-foreground">
-                    {category.description}
-                  </p>
-                </AnimatedSection>
-
-                <StaggeredContainer className="grid sm:grid-cols-2 gap-4">
-                  {category.features.map((feature) => (
-                    <StaggeredItem key={feature.title}>
-                      <div className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 hover:bg-card transition-all duration-300">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
-                          <feature.icon className="w-5 h-5 text-primary" />
-                        </div>
-                        <h3 className="font-display font-bold text-foreground mb-1 text-sm">
-                          {feature.title}
-                        </h3>
-                        <p className="text-muted-foreground text-xs leading-relaxed">
-                          {feature.description}
-                        </p>
-                      </div>
-                    </StaggeredItem>
-                  ))}
-                </StaggeredContainer>
-              </div>
-
-              {/* Demo side */}
-              <div className={categoryIndex % 2 === 1 ? "lg:order-1" : ""}>
-                <AnimatedSection>
-                  {renderDemo(category.demo)}
-                </AnimatedSection>
-              </div>
-            </div>
-          </div>
-        </section>
+          category={category} 
+          index={categoryIndex}
+          renderDemo={renderDemo}
+        />
       ))}
 
-      <CTASection />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <CTASection />
+      </motion.div>
     </Layout>
+  );
+};
+
+// Feature Category Component with enhanced animations
+const FeatureCategory = ({ 
+  category, 
+  index, 
+  renderDemo 
+}: { 
+  category: typeof featureCategories[0]; 
+  index: number;
+  renderDemo: (type: string) => React.ReactNode;
+}) => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  return (
+    <section 
+      ref={sectionRef}
+      className={`py-16 lg:py-24 ${index % 2 === 1 ? "bg-card/30" : ""}`}
+    >
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${
+          index % 2 === 1 ? "lg:flex-row-reverse" : ""
+        }`}>
+          {/* Content side */}
+          <motion.div 
+            initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className={index % 2 === 1 ? "lg:order-2" : ""}
+          >
+            <div className="mb-8">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-4"
+              >
+                {category.title}
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-muted-foreground"
+              >
+                {category.description}
+              </motion.p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {category.features.map((feature, featureIndex) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: 0.3 + featureIndex * 0.1,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 hover:bg-card transition-all duration-300"
+                >
+                  <motion.div 
+                    className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <feature.icon className="w-5 h-5 text-primary" />
+                  </motion.div>
+                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">
+                    {feature.title}
+                  </h3>
+                  <p className="text-muted-foreground text-xs leading-relaxed">
+                    {feature.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Demo side */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className={index % 2 === 1 ? "lg:order-1" : ""}
+          >
+            {renderDemo(category.demo)}
+          </motion.div>
+        </div>
+      </div>
+    </section>
   );
 };
 

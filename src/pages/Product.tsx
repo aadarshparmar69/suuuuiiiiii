@@ -4,7 +4,6 @@ import { ArrowRight, UserPlus, Brain, MessageCircle, TrendingUp, Check, ChevronL
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
-import { AnimatedSection } from "@/components/AnimatedSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { DashboardMockup } from "@/components/mockups/DashboardMockup";
 import { LeadPipelineMockup } from "@/components/mockups/LeadPipelineMockup";
@@ -157,14 +156,22 @@ const Product = () => {
   const [activeMockupIndex, setActiveMockupIndex] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
   const heroRef = useRef(null);
-  const {
-    scrollYProgress
-  } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress: pageProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
   });
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.98]);
+  
   const renderMockup = (type: string) => {
     switch (type) {
       case "pipeline":
@@ -179,13 +186,23 @@ const Product = () => {
         return null;
     }
   };
+  
   const handlePrevMockup = () => {
     setActiveMockupIndex(prev => prev > 0 ? prev - 1 : workflowSteps.length - 1);
   };
+  
   const handleNextMockup = () => {
     setActiveMockupIndex(prev => prev < workflowSteps.length - 1 ? prev + 1 : 0);
   };
+  
   return <Layout>
+      {/* Progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
+        style={{ scaleX: pageProgress }}
+      />
+      
+      <div ref={containerRef}>
       {/* Hero - Mobile Optimized */}
       <section ref={heroRef} className="pt-20 pb-16 lg:py-32 relative overflow-hidden">
         {/* Premium gradient background */}
@@ -362,51 +379,9 @@ const Product = () => {
       <section className="hidden lg:block py-24 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="space-y-32">
-            {workflowSteps.map((step, index) => <AnimatedSection key={step.step} delay={index * 0.1}>
-                <div className={`grid lg:grid-cols-2 gap-12 lg:gap-16 items-center`}>
-                  <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                    <div className="flex items-center gap-4 mb-6">
-                      <motion.div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center" whileHover={{
-                    scale: 1.05
-                  }} transition={{
-                    type: "spring",
-                    stiffness: 400
-                  }}>
-                        <step.icon className="w-8 h-8 text-primary-foreground" />
-                      </motion.div>
-                      <span className="text-5xl font-display font-bold text-muted/50">
-                        {step.step}
-                      </span>
-                    </div>
-                    <h2 className="text-3xl lg:text-4xl font-display font-bold text-foreground mb-4">
-                      {step.title}
-                    </h2>
-                    <p className="text-lg text-muted-foreground mb-8">
-                      {step.description}
-                    </p>
-                    <ul className="space-y-3">
-                      {step.details.map(detail => <motion.li key={detail} className="flex items-center gap-3" initial={{
-                    opacity: 0,
-                    x: -10
-                  }} whileInView={{
-                    opacity: 1,
-                    x: 0
-                  }} viewport={{
-                    once: true
-                  }}>
-                          <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                            <Check className="w-4 h-4 text-primary" />
-                          </div>
-                          <span className="text-foreground">{detail}</span>
-                        </motion.li>)}
-                    </ul>
-                  </div>
-
-                  <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                    {renderMockup(step.mockup)}
-                  </div>
-                </div>
-              </AnimatedSection>)}
+            {workflowSteps.map((step, index) => (
+              <WorkflowStep key={step.step} step={step} index={index} renderMockup={renderMockup} />
+            ))}
           </div>
         </div>
       </section>
@@ -561,6 +536,84 @@ const Product = () => {
       </section>
 
       <CTASection />
+      </div>
     </Layout>;
 };
+
+// WorkflowStep Component for desktop view
+const WorkflowStep = ({ 
+  step, 
+  index, 
+  renderMockup 
+}: { 
+  step: typeof workflowSteps[0]; 
+  index: number;
+  renderMockup: (type: string) => React.ReactNode;
+}) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 60 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className={`grid lg:grid-cols-2 gap-12 lg:gap-16 items-center`}>
+        <motion.div 
+          initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className={index % 2 === 1 ? "lg:order-2" : ""}
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <motion.div 
+              className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center"
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              <step.icon className="w-8 h-8 text-primary-foreground" />
+            </motion.div>
+            <span className="text-5xl font-display font-bold text-muted/50">
+              {step.step}
+            </span>
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-display font-bold text-foreground mb-4">
+            {step.title}
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            {step.description}
+          </p>
+          <ul className="space-y-3">
+            {step.details.map((detail, detailIndex) => (
+              <motion.li 
+                key={detail} 
+                className="flex items-center gap-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.3 + detailIndex * 0.1 }}
+              >
+                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-foreground">{detail}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className={index % 2 === 1 ? "lg:order-1" : ""}
+        >
+          {renderMockup(step.mockup)}
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
 export default Product;
