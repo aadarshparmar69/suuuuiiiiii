@@ -512,8 +512,7 @@ const Product = () => {
                 <span className="gradient-text">touchpoint</span>
               </h2>
               <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-6 leading-relaxed">
-                See the complete journey of every lead—from first contact to closed deal. 
-                Our timeline view shows you exactly when each follow-up happened and what's coming next.
+                See the complete journey of every lead from first contact to closed deal. Our timeline view shows you exactly when each follow-up happened and what's coming next.
               </p>
               <ul className="space-y-3">
                 {["Visual timeline of all interactions", "Status tracking for each touchpoint", "Scheduled follow-ups with reminders", "AI-suggested next best actions"].map((item, i) => <motion.li key={item} initial={{
