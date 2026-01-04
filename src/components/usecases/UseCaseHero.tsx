@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Building2, Briefcase, Home, Wrench } from "lucide-react";
 
 const useCaseIcons = [
@@ -9,8 +10,17 @@ const useCaseIcons = [
 ];
 
 export const UseCaseHero = () => {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
-    <section className="relative min-h-[80vh] flex items-center overflow-hidden">
+    <section ref={heroRef} className="relative min-h-[80vh] flex items-center overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card/30" />
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px]" />
