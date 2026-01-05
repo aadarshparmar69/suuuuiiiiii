@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import { Layout } from "@/components/Layout";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -12,197 +12,116 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { ProblemSection } from "@/components/sections/ProblemSection";
+import { easings } from "@/hooks/useScrollAnimations";
+
 const Index = () => {
   const containerRef = useRef(null);
-  const {
-    scrollYProgress
-  } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"],
   });
 
-  // Smooth progress indicator
-  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-  return <Layout>
-      {/* Progress bar */}
-      
-      
-      <div ref={containerRef}>
-        {/* Hero with parallax */}
-        <motion.div initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} transition={{
-        duration: 0.8
-      }}>
-          <HeroSection />
-        </motion.div>
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
-        {/* Trust section with slide reveal */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 40
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
+  const progressWidth = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
+
+  return (
+    <Layout>
+      {/* Smooth progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-primary/80 z-50 origin-left"
+        style={{ scaleX: smoothProgress }}
+      />
+
+      <div ref={containerRef}>
+        {/* Hero */}
+        <HeroSection />
+
+        {/* Trust section */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: easings.smooth }}
+        >
           <TrustLogosSection />
         </motion.div>
 
         {/* Problem Section */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 50
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true,
-        margin: "-80px"
-      }} transition={{
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
-          <ProblemSection />
-        </motion.div>
+        <ProblemSection />
 
-        {/* Services with stagger */}
-        <motion.div initial={{
-        opacity: 0
-      }} whileInView={{
-        opacity: 1
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.6
-      }}>
-          <ServicesSection />
-        </motion.div>
+        {/* Services */}
+        <ServicesSection />
 
-        {/* How it works with scroll reveal */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 60
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
+        {/* How it works */}
+        <motion.div
+          initial={{ opacity: 0, y: 80 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: easings.smooth }}
+        >
           <HowItWorksSection />
         </motion.div>
 
-        {/* WhatsApp section with scale */}
-        <motion.div initial={{
-        opacity: 0,
-        scale: 0.98
-      }} whileInView={{
-        opacity: 1,
-        scale: 1
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
+        {/* WhatsApp section */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: easings.smooth }}
+        >
           <WhatsAppSection />
         </motion.div>
 
         {/* Features */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 50
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
-          <FeaturesSection />
-        </motion.div>
+        <FeaturesSection />
 
         {/* Use Cases */}
-        <motion.div initial={{
-        opacity: 0
-      }} whileInView={{
-        opacity: 1
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.6
-      }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.8, ease: easings.smooth }}
+        >
           <UseCasesSection />
         </motion.div>
 
         {/* Testimonials */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 40
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: easings.smooth }}
+        >
           <TestimonialsSection />
         </motion.div>
 
         {/* Pricing */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 50
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true,
-        margin: "-100px"
-      }} transition={{
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 70 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: easings.smooth }}
+        >
           <PricingSection />
         </motion.div>
 
         {/* CTA */}
-        <motion.div initial={{
-        opacity: 0,
-        scale: 0.95
-      }} whileInView={{
-        opacity: 1,
-        scale: 1
-      }} viewport={{
-        once: true,
-        margin: "-80px"
-      }} transition={{
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: easings.smooth }}
+        >
           <CTASection />
         </motion.div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Index;
