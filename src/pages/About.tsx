@@ -28,11 +28,6 @@ const About = () => {
 
   return (
     <Layout>
-      {/* Progress bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
-        style={{ scaleX: scrollYProgress }}
-      />
 
       {/* Hero - Purpose Statement */}
       <section ref={heroRef} className="py-20 lg:py-32 relative overflow-hidden">
