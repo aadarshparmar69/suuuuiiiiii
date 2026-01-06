@@ -95,11 +95,6 @@ const Pricing = () => {
 
   return (
     <Layout>
-      {/* Progress bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
-        style={{ scaleX: scrollYProgress }}
-      />
 
       {/* Hero */}
       <section ref={heroRef} className="py-24 lg:py-32 relative overflow-hidden">

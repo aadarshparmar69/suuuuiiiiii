@@ -196,11 +196,6 @@ const Product = () => {
   };
   
   return <Layout>
-      {/* Progress bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
-        style={{ scaleX: pageProgress }}
-      />
       
       <div ref={containerRef}>
       {/* Hero - Mobile Optimized */}
