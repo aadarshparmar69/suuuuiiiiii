@@ -1,5 +1,4 @@
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { TrustLogosSection } from "@/components/sections/TrustLogosSection";
@@ -15,29 +14,10 @@ import { ProblemSection } from "@/components/sections/ProblemSection";
 import { easings } from "@/hooks/useScrollAnimations";
 
 const Index = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  const progressWidth = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
-
   return (
     <Layout>
-      {/* Smooth progress bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-primary/80 z-50 origin-left"
-        style={{ scaleX: smoothProgress }}
-      />
 
-      <div ref={containerRef}>
+      <div>
         {/* Hero */}
         <HeroSection />
 
