@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion, useScroll } from "framer-motion";
+import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
 import { UseCaseHero } from "@/components/usecases/UseCaseHero";
 import { UseCaseScrollStory } from "@/components/usecases/UseCaseScrollStory";
@@ -7,21 +6,9 @@ import { UseCaseResults } from "@/components/usecases/UseCaseResults";
 import { UseCaseCTA } from "@/components/usecases/UseCaseCTA";
 
 const UseCases = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
   return (
     <Layout>
-      {/* Progress bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primary/80 origin-left z-50"
-        style={{ scaleX: scrollYProgress }}
-      />
-
-      <div ref={containerRef}>
+      <div>
         {/* Hero with enhanced entrance */}
         <motion.div
           initial={{ opacity: 0 }}
