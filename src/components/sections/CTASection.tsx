@@ -116,7 +116,7 @@ export const CTASection = () => {
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </Button>
                 </Link>
-                <a href="https://cal.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://followiq.setmore.com" target="_blank" rel="noopener noreferrer">
                   <Button variant="heroOutline" size="xl" className="w-full sm:w-auto">
                     Book a Demo
                   </Button>
