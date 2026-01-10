@@ -8,6 +8,7 @@ import { Layout } from "@/components/Layout";
 import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 
 const contactInfo = [
   { icon: Mail, label: "Email", value: "contact@followiq.site", href: "mailto:contact@followiq.site" },
@@ -68,6 +69,7 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEOHead {...pageSEO.contact} />
       {/* Hero */}
       <section className="py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />

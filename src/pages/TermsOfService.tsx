@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -115,7 +116,7 @@ const sections = [
 const TermsOfService = () => {
   return (
     <>
-
+      <SEOHead {...pageSEO.termsOfService} />
       <main className="min-h-screen bg-background">
         {/* Header */}
         <div className="border-b border-border/50 bg-card/30">

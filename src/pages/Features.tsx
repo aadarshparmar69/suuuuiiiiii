@@ -27,6 +27,7 @@ import { WhatsAppScheduleDemo } from "@/components/demos/WhatsAppScheduleDemo";
 import { TeamCollaborationDemo } from "@/components/demos/TeamCollaborationDemo";
 import { PerformanceInsightsDemo } from "@/components/demos/PerformanceInsightsDemo";
 import { ScrollReveal, StaggeredReveal, StaggeredItem } from "@/components/ScrollReveal";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 
 const featureCategories = [
   {
@@ -225,6 +226,7 @@ const Features = () => {
 
   return (
     <Layout>
+      <SEOHead {...pageSEO.features} />
 
       {/* Hero */}
       <section ref={heroRef} className="py-24 lg:py-32 relative overflow-hidden">

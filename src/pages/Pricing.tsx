@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Check, ArrowRight, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 
 const plans = [
   {
@@ -95,6 +96,7 @@ const Pricing = () => {
 
   return (
     <Layout>
+      <SEOHead {...pageSEO.pricing} />
 
       {/* Hero */}
       <section ref={heroRef} className="py-24 lg:py-32 relative overflow-hidden">
