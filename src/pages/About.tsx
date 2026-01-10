@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 
 const team = [
   { 
@@ -28,6 +29,7 @@ const About = () => {
 
   return (
     <Layout>
+      <SEOHead {...pageSEO.about} />
 
       {/* Hero - Purpose Statement */}
       <section ref={heroRef} className="py-20 lg:py-32 relative overflow-hidden">

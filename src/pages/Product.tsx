@@ -11,6 +11,7 @@ import { WhatsAppPreview } from "@/components/mockups/WhatsAppPreview";
 import { AISuggestionPanel } from "@/components/mockups/AISuggestionPanel";
 import { FollowUpTimelineMockup } from "@/components/mockups/FollowUpTimelineMockup";
 import { MetricsChartMockup } from "@/components/mockups/MetricsChartMockup";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 const workflowSteps = [{
   step: "01",
   icon: UserPlus,
@@ -196,7 +197,7 @@ const Product = () => {
   };
   
   return <Layout>
-      
+      <SEOHead {...pageSEO.product} />
       <div ref={containerRef}>
       {/* Hero - Mobile Optimized */}
       <section ref={heroRef} className="pt-20 pb-16 lg:py-32 relative overflow-hidden">

@@ -4,10 +4,12 @@ import { UseCaseHero } from "@/components/usecases/UseCaseHero";
 import { UseCaseScrollStory } from "@/components/usecases/UseCaseScrollStory";
 import { UseCaseResults } from "@/components/usecases/UseCaseResults";
 import { UseCaseCTA } from "@/components/usecases/UseCaseCTA";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 
 const UseCases = () => {
   return (
     <Layout>
+      <SEOHead {...pageSEO.useCases} />
       <div>
         {/* Hero with enhanced entrance */}
         <motion.div
