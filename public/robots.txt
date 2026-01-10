@@ -1,8 +1,13 @@
+# Follow IQ - AI Sales Follow-Up Manager
+# https://followiq.com
+
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -12,3 +17,13 @@ Allow: /
 
 User-agent: *
 Allow: /
+Crawl-delay: 2
+
+# Sitemap location
+Sitemap: https://followiq.com/sitemap.xml
+
+# Disallow admin and auth pages
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password

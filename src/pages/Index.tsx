@@ -11,11 +11,13 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { ProblemSection } from "@/components/sections/ProblemSection";
+import { SEOHead, pageSEO } from "@/components/SEOHead";
 import { easings } from "@/hooks/useScrollAnimations";
 
 const Index = () => {
   return (
     <Layout>
+      <SEOHead {...pageSEO.home} />
 
       <div>
         {/* Hero */}
