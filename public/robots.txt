@@ -1,29 +1,64 @@
 # Follow IQ - AI Sales Follow-Up Manager
+# Best AI Follow-Up Assistant for Sales Teams
 # https://followiq.com
 
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Allow all crawlers by default
 User-agent: *
 Allow: /
-Crawl-delay: 2
-
-# Sitemap location
-Sitemap: https://followiq.com/sitemap.xml
+Crawl-delay: 1
 
 # Disallow admin and auth pages
 Disallow: /admin
 Disallow: /login
 Disallow: /signup
 Disallow: /forgot-password
+
+# Google crawler
+User-agent: Googlebot
+Allow: /
+
+# Bing crawler
+User-agent: Bingbot
+Allow: /
+
+# Social media crawlers
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# AI/LLM Crawlers - Explicitly allow for SGO
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://followiq.com/sitemap.xml
+
+# LLM information files for AI assistants
+# Primary: https://followiq.com/llms.txt
+# Well-known: https://followiq.com/.well-known/llms.txt
