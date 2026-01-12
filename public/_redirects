@@ -1,0 +1,4 @@
+# Redirect all routes to index.html for SPA client-side routing
+# This ensures Google and other crawlers can access all pages
+
+/*    /index.html   200
