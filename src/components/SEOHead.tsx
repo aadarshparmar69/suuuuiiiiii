@@ -8,6 +8,13 @@ interface SEOHeadProps {
   ogImage?: string;
   ogType?: string;
   twitterCard?: string;
+  twitterSite?: string;
+  twitterCreator?: string;
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  section?: string;
+  noindex?: boolean;
   structuredData?: object;
 }
 
@@ -19,6 +26,13 @@ export const SEOHead = ({
   ogImage = "https://followiq.com/og-image.png",
   ogType = "website",
   twitterCard = "summary_large_image",
+  twitterSite = "@FollowIQ",
+  twitterCreator = "@FollowIQ",
+  author = "Follow IQ",
+  publishedTime,
+  modifiedTime,
+  section,
+  noindex = false,
   structuredData,
 }: SEOHeadProps) => {
   useEffect(() => {
@@ -37,13 +51,24 @@ export const SEOHead = ({
       meta.content = content;
     };
 
+    // Remove meta tag
+    const removeMeta = (name: string, isProperty = false) => {
+      const attribute = isProperty ? "property" : "name";
+      const meta = document.querySelector(`meta[${attribute}="${name}"]`);
+      if (meta) meta.remove();
+    };
+
     // Basic meta tags
     updateMeta("description", description);
     updateMeta("keywords", keywords);
-    updateMeta("author", "Follow IQ");
-    updateMeta("robots", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
-    updateMeta("googlebot", "index, follow");
-    updateMeta("bingbot", "index, follow");
+    updateMeta("author", author);
+    updateMeta("robots", noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+    updateMeta("googlebot", noindex ? "noindex, nofollow" : "index, follow");
+    updateMeta("bingbot", noindex ? "noindex, nofollow" : "index, follow");
+    
+    // Additional crawlers for LLM platforms
+    updateMeta("ai-assistant", `${title} - ${description.substring(0, 150)}`);
+    updateMeta("llm-description", description);
 
     // Open Graph tags
     updateMeta("og:title", title, true);
@@ -51,24 +76,38 @@ export const SEOHead = ({
     updateMeta("og:type", ogType, true);
     updateMeta("og:url", canonicalUrl, true);
     updateMeta("og:image", ogImage, true);
+    updateMeta("og:image:secure_url", ogImage, true);
     updateMeta("og:image:width", "1200", true);
     updateMeta("og:image:height", "630", true);
+    updateMeta("og:image:alt", title, true);
     updateMeta("og:site_name", "Follow IQ", true);
     updateMeta("og:locale", "en_US", true);
+    
+    // Article specific OG tags
+    if (ogType === "article") {
+      if (publishedTime) updateMeta("article:published_time", publishedTime, true);
+      if (modifiedTime) updateMeta("article:modified_time", modifiedTime, true);
+      if (section) updateMeta("article:section", section, true);
+      updateMeta("article:author", author, true);
+    }
 
     // Twitter Card tags
     updateMeta("twitter:card", twitterCard);
-    updateMeta("twitter:site", "@FollowIQ");
-    updateMeta("twitter:creator", "@FollowIQ");
+    updateMeta("twitter:site", twitterSite);
+    updateMeta("twitter:creator", twitterCreator);
     updateMeta("twitter:title", title);
     updateMeta("twitter:description", description);
     updateMeta("twitter:image", ogImage);
+    updateMeta("twitter:image:alt", title);
+    updateMeta("twitter:domain", "followiq.com");
 
     // Additional SEO tags
     updateMeta("application-name", "Follow IQ");
     updateMeta("apple-mobile-web-app-title", "Follow IQ");
     updateMeta("theme-color", "#6366F1");
     updateMeta("msapplication-TileColor", "#6366F1");
+    updateMeta("format-detection", "telephone=no");
+    updateMeta("mobile-web-app-capable", "yes");
 
     // Update canonical link
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
@@ -87,6 +126,7 @@ export const SEOHead = ({
           "@type": "Organization",
           "@id": "https://followiq.com/#organization",
           "name": "Follow IQ",
+          "alternateName": ["FollowIQ", "Follow-IQ"],
           "url": "https://followiq.com",
           "logo": {
             "@type": "ImageObject",
@@ -100,9 +140,27 @@ export const SEOHead = ({
           ],
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+1-555-FOLLOW-IQ",
+            "telephone": "+91-901-593-1203",
             "contactType": "sales",
+            "email": "contact@followiq.site",
             "availableLanguage": "English"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": `${canonicalUrl}#webpage`,
+          "url": canonicalUrl,
+          "name": title,
+          "description": description,
+          "isPartOf": {
+            "@id": "https://followiq.com/#website"
+          },
+          "about": {
+            "@id": "https://followiq.com/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": ogImage
           }
         },
         {
@@ -127,9 +185,9 @@ export const SEOHead = ({
           "operatingSystem": "Web",
           "offers": {
             "@type": "Offer",
-            "price": "0",
+            "price": "15",
             "priceCurrency": "USD",
-            "description": "Free trial available"
+            "description": "Starting price per month"
           },
           "aggregateRating": {
             "@type": "AggregateRating",
@@ -163,14 +221,20 @@ export const SEOHead = ({
     script.textContent = JSON.stringify(dataToUse);
 
     return () => {
-      // Cleanup is optional since we're updating existing tags
+      // Cleanup article-specific tags when unmounting
+      if (ogType === "article") {
+        removeMeta("article:published_time", true);
+        removeMeta("article:modified_time", true);
+        removeMeta("article:section", true);
+        removeMeta("article:author", true);
+      }
     };
-  }, [title, description, keywords, canonicalUrl, ogImage, ogType, twitterCard, structuredData]);
+  }, [title, description, keywords, canonicalUrl, ogImage, ogType, twitterCard, twitterSite, twitterCreator, author, publishedTime, modifiedTime, section, noindex, structuredData]);
 
   return null;
 };
 
-// Page-specific SEO configurations with OG images
+// Page-specific SEO configurations with comprehensive meta data
 export const pageSEO = {
   home: {
     title: "Follow IQ - AI Sales Follow-Up Manager | Never Lose a Lead Again",
@@ -221,18 +285,49 @@ export const pageSEO = {
     canonicalUrl: "https://followiq.com/contact",
     ogImage: "https://followiq.com/og-contact.png",
   },
+  login: {
+    title: "Login | Follow IQ - Access Your AI Sales Dashboard",
+    description: "Log in to your Follow IQ account to access your AI-powered sales dashboard, manage leads, and automate your follow-ups with intelligent automation.",
+    keywords: "FollowIQ login, sign in, sales dashboard, account access, CRM login, follow-up automation login",
+    canonicalUrl: "https://followiq.com/login",
+    ogImage: "https://followiq.com/og-image.png",
+    noindex: true,
+  },
+  signup: {
+    title: "Sign Up | Follow IQ - Start Your Free Trial Today",
+    description: "Create your Follow IQ account and start automating your sales follow-ups with AI. Free trial available. No credit card required. Get started in minutes.",
+    keywords: "FollowIQ signup, create account, free trial, sales automation trial, CRM registration, start free, AI sales assistant trial",
+    canonicalUrl: "https://followiq.com/signup",
+    ogImage: "https://followiq.com/og-image.png",
+  },
+  forgotPassword: {
+    title: "Reset Password | Follow IQ - Recover Your Account",
+    description: "Reset your Follow IQ password securely. Enter your email to receive password reset instructions and regain access to your AI sales dashboard.",
+    keywords: "FollowIQ password reset, forgot password, account recovery, reset instructions",
+    canonicalUrl: "https://followiq.com/forgot-password",
+    ogImage: "https://followiq.com/og-image.png",
+    noindex: true,
+  },
   privacyPolicy: {
     title: "Privacy Policy | Follow IQ - Data Protection & Security",
-    description: "Read Follow IQ's privacy policy. Learn how we collect, use, and protect your data with enterprise-grade security measures.",
-    keywords: "FollowIQ privacy, data protection, GDPR, security policy, data handling",
+    description: "Read Follow IQ's privacy policy. Learn how we collect, use, and protect your data with enterprise-grade security measures. GDPR compliant.",
+    keywords: "FollowIQ privacy, data protection, GDPR, security policy, data handling, privacy compliance",
     canonicalUrl: "https://followiq.com/privacy-policy",
     ogImage: "https://followiq.com/og-image.png",
   },
   termsOfService: {
     title: "Terms of Service | Follow IQ - Legal Terms & Conditions",
-    description: "Review Follow IQ's terms of service. Understand our user agreement, service terms, and usage policies.",
-    keywords: "FollowIQ terms, terms of service, user agreement, legal terms, usage policy",
+    description: "Review Follow IQ's terms of service. Understand our user agreement, service terms, and usage policies for the AI sales follow-up platform.",
+    keywords: "FollowIQ terms, terms of service, user agreement, legal terms, usage policy, service agreement",
     canonicalUrl: "https://followiq.com/terms-of-service",
     ogImage: "https://followiq.com/og-image.png",
+  },
+  notFound: {
+    title: "Page Not Found | Follow IQ - 404 Error",
+    description: "The page you're looking for doesn't exist. Return to Follow IQ homepage to explore our AI-powered sales follow-up automation platform.",
+    keywords: "404, page not found, FollowIQ",
+    canonicalUrl: "https://followiq.com/404",
+    ogImage: "https://followiq.com/og-image.png",
+    noindex: true,
   },
 };
