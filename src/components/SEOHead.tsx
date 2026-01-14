@@ -143,19 +143,19 @@ export const SEOHead = ({
     }
     canonical.href = canonicalUrl;
 
-    // Add structured data
+    // Add structured data - using origin for consistent domain references
     const defaultStructuredData = {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "Organization",
-          "@id": "https://followiq.com/#organization",
+          "@id": `${origin}/#organization`,
           "name": "Follow IQ",
           "alternateName": ["FollowIQ", "Follow-IQ"],
-          "url": "https://followiq.com",
+          "url": origin,
           "logo": {
             "@type": "ImageObject",
-            "url": "https://followiq.com/favicon.png",
+            "url": `${origin}/favicon.png`,
             "width": 512,
             "height": 512
           },
@@ -178,10 +178,10 @@ export const SEOHead = ({
           "name": title,
           "description": description,
           "isPartOf": {
-            "@id": "https://followiq.com/#website"
+            "@id": `${origin}/#website`
           },
           "about": {
-            "@id": "https://followiq.com/#organization"
+            "@id": `${origin}/#organization`
           },
           "primaryImageOfPage": {
             "@type": "ImageObject",
@@ -190,24 +190,26 @@ export const SEOHead = ({
         },
         {
           "@type": "WebSite",
-          "@id": "https://followiq.com/#website",
-          "url": "https://followiq.com",
+          "@id": `${origin}/#website`,
+          "url": origin,
           "name": "Follow IQ",
-          "description": "AI-powered sales follow-up manager",
+          "description": "AI-powered sales follow-up manager for WhatsApp automation and lead conversion",
           "publisher": {
-            "@id": "https://followiq.com/#organization"
+            "@id": `${origin}/#organization`
           },
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://followiq.com/?s={search_term_string}",
+            "target": `${origin}/?s={search_term_string}`,
             "query-input": "required name=search_term_string"
           }
         },
         {
           "@type": "SoftwareApplication",
+          "@id": `${origin}/#software`,
           "name": "Follow IQ",
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "Web",
+          "url": origin,
           "offers": {
             "@type": "Offer",
             "price": "15",
@@ -221,14 +223,16 @@ export const SEOHead = ({
             "bestRating": "5",
             "worstRating": "1"
           },
-          "description": "AI-powered sales follow-up manager that ensures every lead gets the right message at the right time.",
+          "description": "Best AI-powered sales follow-up manager and WhatsApp automation tool. Ensures every lead gets the right message at the right time for maximum conversion.",
           "featureList": [
             "AI-powered follow-up suggestions",
-            "WhatsApp integration",
+            "WhatsApp Business integration",
             "Lead pipeline management",
-            "Team collaboration",
-            "Performance analytics",
-            "Automated reminders"
+            "Team collaboration tools",
+            "Performance analytics dashboard",
+            "Automated follow-up reminders",
+            "Smart message scheduling",
+            "Multi-channel communication"
           ]
         }
       ]
