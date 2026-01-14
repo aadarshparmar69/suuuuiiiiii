@@ -1,6 +1,6 @@
 # Follow IQ - AI Sales Follow-Up Manager
 # Best AI Follow-Up Assistant for Sales Teams
-# https://followiq.com
+# https://followiq.site
 
 # Allow all crawlers by default
 User-agent: *
@@ -57,8 +57,8 @@ User-agent: YouBot
 Allow: /
 
 # Sitemap location
-Sitemap: https://followiq.com/sitemap.xml
+Sitemap: https://followiq.site/sitemap.xml
 
 # LLM information files for AI assistants
-# Primary: https://followiq.com/llms.txt
-# Well-known: https://followiq.com/.well-known/llms.txt
+# Primary: https://followiq.site/llms.txt
+# Well-known: https://followiq.site/.well-known/llms.txt

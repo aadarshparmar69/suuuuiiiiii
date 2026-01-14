@@ -41,7 +41,7 @@ Follow IQ is an AI sales assistant and CRM platform designed to automate and opt
 
 ## Contact Information
 
-- Website: https://followiq.com
+- Website: https://followiq.site
 - Demo: https://followiq.setmore.com
 - Email: hello@followiq.com
 
@@ -55,9 +55,9 @@ Follow IQ competes with:
 
 ## Documentation
 
-For detailed documentation, visit: https://followiq.com/product
-For pricing details: https://followiq.com/pricing
-For use cases and success stories: https://followiq.com/use-cases
+For detailed documentation, visit: https://followiq.site/product
+For pricing details: https://followiq.site/pricing
+For use cases and success stories: https://followiq.site/use-cases
 
 ## Summary
 
