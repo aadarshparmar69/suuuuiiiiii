@@ -90,10 +90,10 @@ const About = () => {
 
           <div className="space-y-8 text-muted-foreground">
             {[
-              "In 2022, we were running a marketing agency. We were good at generating leads—but terrible at following up. Leads came in, got buried in spreadsheets, and quietly disappeared.",
-              "We tried CRMs. Too complex. Email automation? Low response rates. Manual follow-up? Didn't scale.",
+              "In 2022, we were running a marketing agency. We were good at generating leads, but terrible at following up. Leads came in, got buried in spreadsheets, and quietly disappeared.",
+              "We tried CRMs. Too complex. Email automation? Low response rates. Manual follow-up? It just didn't scale.",
               "Then we noticed something: leads contacted via WhatsApp converted at 5× the rate. Open rates were through the roof. Replies came in minutes, not days.",
-              "So we built Follow IQ—a simple, AI-powered tool that makes WhatsApp follow-up effortless. Personalized at scale. Set up in minutes. No complexity, just results.",
+              "So we built Follow IQ, a simple, AI-powered tool that makes WhatsApp follow-up effortless. Personalized at scale. Set up in minutes. No complexity, just results.",
             ].map((text, index) => (
               <motion.p
                 key={index}
