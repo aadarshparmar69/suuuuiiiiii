@@ -294,55 +294,100 @@
         ]
       }
     </script>
+
+    <!-- Hide SEO fallback content visually but keep for crawlers -->
+    <style>
+      /* Loading state - app not yet hydrated */
+      html.loading #root {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0a0a0f;
+      }
+      html.loading #root > * {
+        display: none;
+      }
+      html.loading #root::before {
+        content: "";
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(99, 102, 241, 0.2);
+        border-top-color: #6366f1;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      /* SEO fallback - visible only to crawlers (no JS) */
+      #seo-fallback {
+        display: none;
+      }
+      html:not(.loading) #seo-fallback,
+      noscript #seo-fallback {
+        display: block;
+        padding: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: system-ui, sans-serif;
+        line-height: 1.6;
+      }
+    </style>
   </head>
 
   <body>
+    <script>document.documentElement.classList.add('loading');</script>
+
+    <div id="root"></div>
+
     <!--
       SEO fallback content:
-      Some crawlers/LLM “browser tools” fetch HTML without executing JS.
-      This content ensures they still see real copy + internal links.
+      Hidden from users but accessible to crawlers that don't execute JS.
     -->
-    <div id="root">
-      <header>
-        <nav aria-label="Primary">
-          <a href="/">Home</a> · <a href="/product">Product</a> · <a href="/features">Features</a> ·
-          <a href="/pricing">Pricing</a> · <a href="/use-cases">Use Cases</a> · <a href="/contact">Contact</a>
-        </nav>
-      </header>
-      <main>
-        <h1>Follow IQ — AI Sales Follow‑Up Manager</h1>
-        <p>
-          Follow IQ helps sales teams never lose a lead again with AI‑powered follow‑up suggestions, WhatsApp‑first CRM,
-          automated reminders, lead pipeline management, and performance analytics.
-        </p>
-        <section>
-          <h2>What Follow IQ does</h2>
-          <ul>
-            <li>Generates AI follow‑up message suggestions tailored to the lead and stage</li>
-            <li>Automates WhatsApp follow‑ups and reminders so every lead gets a response on time</li>
-            <li>Tracks your pipeline with clear stages and team collaboration</li>
-            <li>Shows performance insights like response time and conversion rate</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing</h2>
-          <p>Plans start at $15/month (Starter), with Professional and Enterprise options for teams.</p>
-        </section>
-        <section>
-          <h2>Popular searches</h2>
+    <noscript>
+      <div id="seo-fallback">
+        <header>
+          <nav aria-label="Primary">
+            <a href="/">Home</a> · <a href="/product">Product</a> · <a href="/features">Features</a> ·
+            <a href="/pricing">Pricing</a> · <a href="/use-cases">Use Cases</a> · <a href="/contact">Contact</a>
+          </nav>
+        </header>
+        <main>
+          <h1>Follow IQ — AI Sales Follow‑Up Manager</h1>
           <p>
-            Best AI follow‑up assistant • WhatsApp follow‑up automation • AI sales automation • WhatsApp CRM • lead
-            management
+            Follow IQ helps sales teams never lose a lead again with AI‑powered follow‑up suggestions, WhatsApp‑first CRM,
+            automated reminders, lead pipeline management, and performance analytics.
           </p>
-        </section>
-      </main>
-      <footer>
-        <p>
-          Learn more: <a href="/product">Product</a>, <a href="/features">Features</a>,
-          <a href="/use-cases">Use Cases</a>, <a href="/pricing">Pricing</a>.
-        </p>
-      </footer>
-    </div>
+          <section>
+            <h2>What Follow IQ does</h2>
+            <ul>
+              <li>Generates AI follow‑up message suggestions tailored to the lead and stage</li>
+              <li>Automates WhatsApp follow‑ups and reminders so every lead gets a response on time</li>
+              <li>Tracks your pipeline with clear stages and team collaboration</li>
+              <li>Shows performance insights like response time and conversion rate</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing</h2>
+            <p>Plans start at $15/month (Starter), with Professional and Enterprise options for teams.</p>
+          </section>
+          <section>
+            <h2>Popular searches</h2>
+            <p>
+              Best AI follow‑up assistant • WhatsApp follow‑up automation • AI sales automation • WhatsApp CRM • lead
+              management
+            </p>
+          </section>
+        </main>
+        <footer>
+          <p>
+            Learn more: <a href="/product">Product</a>, <a href="/features">Features</a>,
+            <a href="/use-cases">Use Cases</a>, <a href="/pricing">Pricing</a>.
+          </p>
+        </footer>
+      </div>
+    </noscript>
 
     <script type="module" src="/src/main.tsx"></script>
   </body>
