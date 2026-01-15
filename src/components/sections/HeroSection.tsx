@@ -123,9 +123,9 @@ export const HeroSection = () => {
     scrollY
   } = useScroll();
   const smoothScrollY = useSpring(scrollY, springConfigs.gentle);
-  const backgroundY = useTransform(smoothScrollY, [0, 600], [0, 120]);
-  const opacity = useTransform(smoothScrollY, [0, 400], [1, 0.2]);
-  const scale = useTransform(smoothScrollY, [0, 400], [1, 0.98]);
+  const backgroundY = useTransform(smoothScrollY, [0, 600], [0, 80]);
+  const opacity = useTransform(smoothScrollY, [0, 600], [1, 0.85]);
+  const scale = useTransform(smoothScrollY, [0, 600], [1, 0.99]);
 
   // Generate particles with stable positions
   const particles = useMemo(() => Array.from({
