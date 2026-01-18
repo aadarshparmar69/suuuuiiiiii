@@ -1,245 +1,233 @@
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
-import { ArrowRight, MessageCircle, Sparkles, Check, Clock, Send, Brain, User } from "lucide-react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { ArrowRight, MessageCircle, Check, Clock, Brain, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { easings, springConfigs } from "@/hooks/useScrollAnimations";
 
-// Animated workflow step
-interface WorkflowStep {
-  id: number;
-  icon: React.ElementType;
-  label: string;
-  status: "waiting" | "active" | "complete";
-}
-
+// Refined workflow animation - calm, intentional, product-real
 const WorkflowAnimation = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [messageTyped, setMessageTyped] = useState("");
-  const aiMessage = "Hi Sarah! Following up on our proposal. Ready to discuss next steps?";
+  const [isTyping, setIsTyping] = useState(false);
+  const [typedMessage, setTypedMessage] = useState("");
   
-  const steps: WorkflowStep[] = [
-    { id: 1, icon: User, label: "New Lead", status: currentStep >= 0 ? (currentStep === 0 ? "active" : "complete") : "waiting" },
-    { id: 2, icon: Clock, label: "AI Reminder", status: currentStep >= 1 ? (currentStep === 1 ? "active" : "complete") : "waiting" },
-    { id: 3, icon: Brain, label: "AI Message", status: currentStep >= 2 ? (currentStep === 2 ? "active" : "complete") : "waiting" },
-    { id: 4, icon: MessageCircle, label: "WhatsApp", status: currentStep >= 3 ? (currentStep === 3 ? "active" : "complete") : "waiting" },
-    { id: 5, icon: Check, label: "Deal Closed", status: currentStep >= 4 ? "active" : "waiting" },
+  const steps = [
+    { 
+      id: 0, 
+      icon: User, 
+      label: "Lead Captured",
+      sublabel: "From your website"
+    },
+    { 
+      id: 1, 
+      icon: Brain, 
+      label: "AI Prepares",
+      sublabel: "Personalized message"
+    },
+    { 
+      id: 2, 
+      icon: MessageCircle, 
+      label: "WhatsApp Sent",
+      sublabel: "Perfect timing"
+    },
+    { 
+      id: 3, 
+      icon: Check, 
+      label: "Deal Closed",
+      sublabel: "$4,500 revenue"
+    },
   ];
 
+  const aiMessage = "Hi Sarah! Following up on our chat about the Growth plan. Ready when you are 👋";
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentStep((prev) => (prev + 1) % 6);
-    }, 2500);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => {
+      setCurrentStep((prev) => (prev + 1) % 5);
+    }, 3500);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
-    if (currentStep === 2) {
-      setMessageTyped("");
+    if (currentStep === 1) {
+      setIsTyping(true);
+      setTypedMessage("");
       let i = 0;
       const typing = setInterval(() => {
         if (i < aiMessage.length) {
-          setMessageTyped(aiMessage.slice(0, i + 1));
+          setTypedMessage(aiMessage.slice(0, i + 1));
           i++;
         } else {
           clearInterval(typing);
+          setIsTyping(false);
         }
-      }, 30);
+      }, 35);
       return () => clearInterval(typing);
     }
   }, [currentStep]);
 
+  const getStepStatus = (index: number) => {
+    if (currentStep > index || currentStep === 4) return "complete";
+    if (currentStep === index) return "active";
+    return "pending";
+  };
+
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
-      {/* Main workflow container */}
+    <div className="w-full max-w-3xl mx-auto">
+      {/* Main container - glass card */}
       <motion.div 
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.6, ease: easings.smooth }}
-        className="relative bg-card/80 backdrop-blur-xl border border-border/50 rounded-3xl p-6 md:p-8 shadow-2xl shadow-black/20"
+        transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        className="relative bg-card/90 backdrop-blur-xl border border-border/60 rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl shadow-black/30"
       >
-        {/* Subtle glow behind */}
-        <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-b from-primary/5 to-transparent blur-2xl" />
-        
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/30">
-          <div className="flex items-center gap-3">
-            <motion.div 
-              className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Sparkles className="w-5 h-5 text-primary" />
-            </motion.div>
-            <div>
-              <p className="text-sm font-semibold text-foreground">Follow IQ Workflow</p>
-              <p className="text-xs text-muted-foreground">AI-Powered Lead Journey</p>
-            </div>
+        {/* Header bar */}
+        <div className="flex items-center justify-between px-4 py-3 lg:px-6 lg:py-4 border-b border-border/40 bg-secondary/30">
+          <div className="flex items-center gap-2 lg:gap-3">
+            <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs lg:text-sm font-medium text-muted-foreground">Live Workflow Preview</span>
           </div>
-          <motion.div 
-            className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold"
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Live Demo
-          </motion.div>
+          <span className="text-[10px] lg:text-xs text-muted-foreground/60 font-mono">follow-iq.app</span>
         </div>
 
-        {/* Workflow steps */}
-        <div className="flex items-center justify-between relative mb-8">
-          {/* Connection line */}
-          <div className="absolute top-1/2 left-8 right-8 h-0.5 bg-border/50 -translate-y-1/2" />
-          <motion.div 
-            className="absolute top-1/2 left-8 h-0.5 bg-primary -translate-y-1/2"
-            initial={{ width: 0 }}
-            animate={{ width: `${Math.min(currentStep * 25, 100)}%` }}
-            transition={{ duration: 0.5, ease: easings.smooth }}
-          />
-          
-          {steps.map((step, index) => (
+        {/* Workflow steps - horizontal on desktop, vertical on mobile */}
+        <div className="p-4 lg:p-8">
+          {/* Steps row */}
+          <div className="flex items-start justify-between gap-2 lg:gap-4 mb-6 lg:mb-8">
+            {steps.map((step, index) => {
+              const status = getStepStatus(index);
+              const Icon = step.icon;
+              
+              return (
+                <div key={step.id} className="flex flex-col items-center flex-1">
+                  {/* Step circle */}
+                  <motion.div
+                    animate={{
+                      scale: status === "active" ? 1.1 : 1,
+                      backgroundColor: status === "complete" 
+                        ? "hsl(var(--primary))" 
+                        : status === "active" 
+                        ? "hsl(var(--primary) / 0.2)" 
+                        : "hsl(var(--secondary))"
+                    }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    className={`w-10 h-10 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl flex items-center justify-center relative ${
+                      status === "complete" 
+                        ? "text-primary-foreground" 
+                        : status === "active"
+                        ? "text-primary ring-2 ring-primary/30 ring-offset-2 ring-offset-card"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {status === "complete" ? (
+                      <Check className="w-4 h-4 lg:w-5 lg:h-5" />
+                    ) : (
+                      <Icon className="w-4 h-4 lg:w-5 lg:h-5" />
+                    )}
+                  </motion.div>
+                  
+                  {/* Labels - hidden on mobile, visible on desktop */}
+                  <div className="mt-2 lg:mt-3 text-center hidden sm:block">
+                    <p className={`text-xs lg:text-sm font-semibold transition-colors duration-300 ${
+                      status === "active" ? "text-primary" : status === "complete" ? "text-foreground" : "text-muted-foreground"
+                    }`}>
+                      {step.label}
+                    </p>
+                    <p className="text-[10px] lg:text-xs text-muted-foreground/70 mt-0.5">
+                      {step.sublabel}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Progress bar */}
+          <div className="relative h-1 bg-secondary rounded-full mb-6 lg:mb-8 overflow-hidden">
             <motion.div
-              key={step.id}
-              className="relative z-10 flex flex-col items-center gap-2"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 + index * 0.1, duration: 0.4 }}
-            >
-              <motion.div
-                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                  step.status === "complete" 
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
-                    : step.status === "active"
-                    ? "bg-primary/20 text-primary ring-2 ring-primary ring-offset-2 ring-offset-card"
-                    : "bg-secondary text-muted-foreground"
-                }`}
-                animate={step.status === "active" ? { scale: [1, 1.08, 1] } : {}}
-                transition={{ duration: 1, repeat: step.status === "active" ? Infinity : 0 }}
-              >
-                {step.status === "complete" ? (
-                  <Check className="w-5 h-5 md:w-6 md:h-6" />
-                ) : (
-                  <step.icon className="w-5 h-5 md:w-6 md:h-6" />
-                )}
-              </motion.div>
-              <span className={`text-xs font-medium hidden sm:block ${
-                step.status === "active" ? "text-primary" : "text-muted-foreground"
-              }`}>
-                {step.label}
-              </span>
-            </motion.div>
-          ))}
-        </div>
+              className="absolute inset-y-0 left-0 bg-primary rounded-full"
+              animate={{ width: `${Math.min((currentStep / 3) * 100, 100)}%` }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            />
+          </div>
 
-        {/* Dynamic content area */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="bg-secondary/50 rounded-2xl p-4 md:p-5 min-h-[100px]"
-          >
-            {currentStep === 0 && (
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                  SM
+          {/* Dynamic content area */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="bg-secondary/40 rounded-xl lg:rounded-2xl p-4 lg:p-5 min-h-[80px] lg:min-h-[100px]"
+            >
+              {currentStep === 0 && (
+                <div className="flex items-center gap-3 lg:gap-4">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold text-sm lg:text-base shrink-0">
+                    SM
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm lg:text-base font-semibold text-foreground truncate">Sarah Martinez</p>
+                    <p className="text-xs lg:text-sm text-muted-foreground">Viewed pricing • Intent score: 85</p>
+                  </div>
+                  <span className="px-2 py-1 lg:px-3 lg:py-1.5 rounded-full bg-accent/15 text-accent text-xs font-semibold whitespace-nowrap">
+                    Hot Lead
+                  </span>
                 </div>
+              )}
+              
+              {currentStep === 1 && (
                 <div>
-                  <p className="text-sm font-semibold text-foreground">Sarah Martinez - New Lead</p>
-                  <p className="text-xs text-muted-foreground">Viewed pricing page • High intent score: 85</p>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Brain className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-primary" />
+                    <span className="text-xs lg:text-sm font-medium text-primary">AI composing message...</span>
+                  </div>
+                  <div className="bg-card/60 rounded-lg lg:rounded-xl p-3 lg:p-4 border border-border/30">
+                    <p className="text-sm lg:text-base text-foreground leading-relaxed">
+                      {typedMessage}
+                      {isTyping && (
+                        <motion.span
+                          animate={{ opacity: [1, 0] }}
+                          transition={{ duration: 0.6, repeat: Infinity }}
+                          className="inline-block w-0.5 h-4 bg-primary ml-0.5 align-middle"
+                        />
+                      )}
+                    </p>
+                  </div>
                 </div>
-                <motion.span 
-                  className="ml-auto px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
-                >
-                  Hot Lead
-                </motion.span>
-              </div>
-            )}
-            {currentStep === 1 && (
-              <div className="flex items-center gap-4">
-                <motion.div 
-                  className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 0.5, repeat: 2 }}
-                >
-                  <Clock className="w-6 h-6 text-primary" />
-                </motion.div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Follow-up Reminder Triggered</p>
-                  <p className="text-xs text-muted-foreground">Optimal time detected: Tuesday 10:30 AM</p>
+              )}
+              
+              {currentStep === 2 && (
+                <div className="flex items-center gap-3 lg:gap-4">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-[#25D366]/15 flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-5 h-5 lg:w-6 lg:h-6 text-[#25D366]" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm lg:text-base font-semibold text-foreground">Sent via WhatsApp</p>
+                    <p className="text-xs lg:text-sm text-muted-foreground">Delivered • Read at 10:32 AM</p>
+                  </div>
+                  <div className="flex items-center gap-1 text-[#25D366]">
+                    <Check className="w-4 h-4" />
+                    <Check className="w-4 h-4 -ml-2" />
+                  </div>
                 </div>
-              </div>
-            )}
-            {currentStep === 2 && (
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <Brain className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-semibold text-primary">AI Generating Message...</span>
+              )}
+              
+              {(currentStep === 3 || currentStep === 4) && (
+                <div className="flex items-center gap-3 lg:gap-4">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-accent/15 flex items-center justify-center shrink-0">
+                    <Check className="w-5 h-5 lg:w-6 lg:h-6 text-accent" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm lg:text-base font-semibold text-foreground">Deal Closed! 🎉</p>
+                    <p className="text-xs lg:text-sm text-muted-foreground">$4,500 • 3 days from first contact</p>
+                  </div>
+                  <span className="px-2 py-1 lg:px-3 lg:py-1.5 rounded-full bg-accent/15 text-accent text-xs font-semibold">
+                    Won
+                  </span>
                 </div>
-                <div className="bg-card/80 rounded-xl p-3 border border-border/30">
-                  <p className="text-sm text-foreground leading-relaxed">
-                    {messageTyped}
-                    <motion.span
-                      animate={{ opacity: [0, 1] }}
-                      transition={{ duration: 0.5, repeat: Infinity }}
-                      className="inline-block w-0.5 h-4 bg-primary ml-0.5 align-middle"
-                    />
-                  </p>
-                </div>
-              </div>
-            )}
-            {currentStep === 3 && (
-              <div className="flex items-center gap-4">
-                <motion.div 
-                  className="w-12 h-12 rounded-xl bg-[#25D366]/10 flex items-center justify-center"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 0.3, repeat: 2 }}
-                >
-                  <MessageCircle className="w-6 h-6 text-[#25D366]" />
-                </motion.div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-foreground">Message Sent via WhatsApp</p>
-                  <p className="text-xs text-muted-foreground">Delivered • Read at 10:32 AM</p>
-                </div>
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, delay: 0.3 }}
-                  className="text-[#25D366]"
-                >
-                  <Check className="w-5 h-5" />
-                </motion.div>
-              </div>
-            )}
-            {currentStep >= 4 && (
-              <div className="flex items-center gap-4">
-                <motion.div 
-                  className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Check className="w-6 h-6 text-accent" />
-                </motion.div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-foreground">Deal Closed! 🎉</p>
-                  <p className="text-xs text-muted-foreground">$4,500 revenue • 3 days from first contact</p>
-                </div>
-                <motion.span 
-                  className="px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
-                >
-                  Won
-                </motion.span>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </motion.div>
     </div>
   );
@@ -248,64 +236,43 @@ const WorkflowAnimation = () => {
 export const HeroSection = () => {
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true });
-  const { scrollY } = useScroll();
-  const smoothScrollY = useSpring(scrollY, springConfigs.gentle);
-  const backgroundY = useTransform(smoothScrollY, [0, 600], [0, 80]);
-  const opacity = useTransform(smoothScrollY, [0, 400], [1, 0.7]);
 
   return (
     <section 
       ref={heroRef} 
-      className="relative min-h-screen flex flex-col justify-center pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center pt-20 pb-12 lg:pt-28 lg:pb-20 overflow-hidden"
     >
-      {/* Background */}
-      <motion.div className="absolute inset-0 overflow-hidden" style={{ y: backgroundY }}>
-        {/* Gradient orbs */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[80%]"
+      {/* Background - subtle, not distracting */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[70%] opacity-40"
           style={{
-            background: `radial-gradient(ellipse 80% 60% at 50% 20%, hsl(var(--primary) / 0.15) 0%, transparent 60%)`
+            background: `radial-gradient(ellipse 70% 50% at 50% 0%, hsl(var(--primary) / 0.12) 0%, transparent 70%)`
           }}
         />
-        
-        {/* Subtle grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 0.03 } : {}}
-          transition={{ duration: 2, delay: 0.5 }}
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
-                              linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px"
-          }}
-        />
-      </motion.div>
+      </div>
 
-      <motion.div style={{ opacity }} className="container mx-auto px-4 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* USP Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: easings.smooth }}
-          className="flex justify-center mb-6"
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex justify-center mb-5 lg:mb-6"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold">
-            <Sparkles className="w-4 h-4" />
-            <span>Not a CRM. An AI Follow-Up System.</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 lg:px-4 lg:py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs lg:text-sm font-semibold">
+            <Sparkles className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+            <span>Not a CRM — An AI Follow-Up System</span>
           </div>
         </motion.div>
 
         {/* Main Headline */}
-        <motion.div className="text-center max-w-4xl mx-auto mb-8">
+        <motion.div className="text-center max-w-4xl mx-auto mb-6 lg:mb-8">
           <motion.h1 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.05] tracking-tight mb-6"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-[1.1] tracking-tight mb-4 lg:mb-6"
+            initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: easings.smooth }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <span className="text-muted-foreground">CRMs track leads.</span>
             <br />
@@ -313,47 +280,35 @@ export const HeroSection = () => {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.4, ease: easings.smooth }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8"
+            transition={{ duration: 0.5, delay: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4"
           >
-            AI-powered follow-ups via WhatsApp that ensure no lead ever slips through the cracks. 
+            AI-powered follow-ups via WhatsApp that ensure no lead ever slips through. 
             Built for agencies, consultants, and service businesses.
           </motion.p>
+        </motion.div>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5, ease: easings.smooth }}
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
-          >
-            <motion.div
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", ...springConfigs.snappy }}
-            >
-              <Link to="/contact">
-                <Button variant="hero" size="xl" className="w-full sm:w-auto group shadow-lg shadow-primary/25">
-                  Get Started
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", ...springConfigs.snappy }}
-            >
-              <a href="https://followiq.setmore.com" target="_blank" rel="noopener noreferrer">
-                <Button variant="heroOutline" size="xl" className="w-full sm:w-auto group">
-                  <MessageCircle className="w-5 h-5 mr-2" />
-                  Book a Demo
-                </Button>
-              </a>
-            </motion.div>
-          </motion.div>
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center mb-10 lg:mb-14 px-4"
+        >
+          <Link to="/contact">
+            <Button variant="hero" size="lg" className="w-full sm:w-auto group shadow-lg shadow-primary/20">
+              Get Started
+              <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform duration-300" />
+            </Button>
+          </Link>
+          <a href="https://followiq.setmore.com" target="_blank" rel="noopener noreferrer">
+            <Button variant="heroOutline" size="lg" className="w-full sm:w-auto group">
+              <MessageCircle className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
+              Book a Demo
+            </Button>
+          </a>
         </motion.div>
 
         {/* Animated Product Workflow */}
@@ -361,10 +316,10 @@ export const HeroSection = () => {
 
         {/* Bottom Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 1.2, ease: easings.smooth }}
-          className="flex flex-wrap justify-center gap-8 md:gap-12 mt-12 pt-8 border-t border-border/30 max-w-2xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex flex-wrap justify-center gap-6 lg:gap-10 mt-10 lg:mt-14 pt-8 border-t border-border/30 max-w-lg mx-auto"
         >
           {[
             { value: "340%", label: "More Conversions" },
@@ -373,19 +328,19 @@ export const HeroSection = () => {
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 1.3 + i * 0.1, duration: 0.5 }}
+              transition={{ delay: 1.1 + i * 0.1, duration: 0.4 }}
               className="text-center"
             >
-              <div className="text-2xl md:text-3xl font-display font-bold text-foreground">
+              <div className="text-xl lg:text-2xl font-display font-bold text-foreground">
                 {stat.value}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
