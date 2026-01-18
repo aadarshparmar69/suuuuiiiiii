@@ -10,7 +10,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote: "I used to spend 4 hours a day on follow-ups. Now the AI handles it and I just close deals. Best investment I've made.",
+    quote: "I used to spend 4 hours a day on follow-ups. Now the AI handles it and I just close deals.",
     author: "Marcus Johnson",
     role: "Real Estate Broker",
     rating: 5,
@@ -34,7 +34,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote: "My team was skeptical about AI writing messages. Now they fight over who gets to use the new templates first.",
+    quote: "My team was skeptical about AI. Now they fight over who gets to use the new templates first.",
     author: "James Wilson",
     role: "Sales Manager",
     rating: 5,
@@ -43,92 +43,73 @@ const testimonials = [
 
 export const TestimonialsSection = () => {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
 
   return (
-    <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden bg-card/30">
-      {/* Background accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+    <section ref={sectionRef} className="py-20 lg:py-32 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
 
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-center max-w-2xl mx-auto mb-16"
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-center max-w-2xl mx-auto mb-12 lg:mb-16"
         >
-          <motion.span 
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center justify-center gap-2 text-sm font-bold text-primary uppercase tracking-widest mb-5"
-          >
+          <span className="inline-block text-xs lg:text-sm font-bold text-primary uppercase tracking-widest mb-4">
             Testimonials
-          </motion.span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
+          </span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-display font-bold leading-tight mb-4">
             Loved by{" "}
             <span className="gradient-text">50+ teams</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base lg:text-lg text-muted-foreground">
             See what sales teams are saying about Follow IQ
           </p>
         </motion.div>
 
         {/* Testimonials Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ 
                 delay: 0.1 + index * 0.08, 
-                duration: 0.6,
+                duration: 0.5,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
+              className="group p-5 lg:p-6 bg-card/80 border border-border/50 rounded-xl lg:rounded-2xl hover:border-primary/30 transition-all duration-300 flex flex-col"
             >
-              <motion.div 
-                whileHover={{ y: -6, borderColor: "hsl(var(--primary) / 0.4)" }}
-                transition={{ duration: 0.3 }}
-                className="h-full p-7 bg-card border border-border rounded-2xl flex flex-col transition-all duration-300 group"
-              >
-                {/* Quote icon */}
-                <Quote className="w-8 h-8 text-primary/20 mb-4 group-hover:text-primary/30 transition-colors" />
+              {/* Quote icon */}
+              <Quote className="w-7 h-7 lg:w-8 lg:h-8 text-primary/20 mb-3 lg:mb-4 group-hover:text-primary/30 transition-colors" />
 
-                {/* Stars */}
-                <div className="flex gap-1 mb-5">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.3 + index * 0.08 + i * 0.05, duration: 0.3 }}
-                    >
-                      <Star className="w-4 h-4 fill-primary text-primary" />
-                    </motion.div>
-                  ))}
+              {/* Stars */}
+              <div className="flex gap-0.5 mb-4">
+                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 lg:w-4 lg:h-4 fill-primary text-primary" />
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p className="text-sm lg:text-[15px] text-foreground leading-relaxed mb-6 flex-1">
+                "{testimonial.quote}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-xs font-bold text-primary">
+                  {testimonial.author.split(" ").map(n => n[0]).join("")}
                 </div>
-
-                {/* Quote */}
-                <p className="text-foreground leading-relaxed mb-8 flex-1 text-[15px]">
-                  "{testimonial.quote}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-4 pt-5 border-t border-border/50">
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-sm font-bold text-primary">
-                    {testimonial.author.split(" ").map(n => n[0]).join("")}
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-foreground">{testimonial.author}</p>
-                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                  </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{testimonial.author}</p>
+                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>

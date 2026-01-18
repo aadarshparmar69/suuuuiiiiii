@@ -6,12 +6,10 @@ import { USPComparisonSection } from "@/components/sections/USPComparisonSection
 import { ProblemSection } from "@/components/sections/ProblemSection";
 import { ProductShowcaseSection } from "@/components/sections/ProductShowcaseSection";
 import { TargetAudienceSection } from "@/components/sections/TargetAudienceSection";
-import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { SEOHead, pageSEO } from "@/components/SEOHead";
-import { easings } from "@/hooks/useScrollAnimations";
 
 const Index = () => {
   return (
@@ -24,10 +22,10 @@ const Index = () => {
 
         {/* Trust section */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.7, ease: easings.smooth }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-5%" }}
+          transition={{ duration: 0.6 }}
         >
           <TrustLogosSection />
         </motion.div>
@@ -38,51 +36,27 @@ const Index = () => {
         {/* Problem Section */}
         <ProblemSection />
 
-        {/* Product Showcase with scroll-based storytelling */}
+        {/* Product Showcase */}
         <ProductShowcaseSection />
 
         {/* Target Audience */}
         <TargetAudienceSection />
 
-        {/* How it works */}
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.8, ease: easings.smooth }}
-        >
-          <HowItWorksSection />
-        </motion.div>
-
         {/* Testimonials */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.8, ease: easings.smooth }}
-        >
-          <TestimonialsSection />
-        </motion.div>
+        <TestimonialsSection />
 
         {/* Pricing */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.8, ease: easings.smooth }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-5%" }}
+          transition={{ duration: 0.6 }}
         >
           <PricingSection />
         </motion.div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.8, ease: easings.smooth }}
-        >
-          <CTASection />
-        </motion.div>
+        <CTASection />
       </div>
     </Layout>
   );
