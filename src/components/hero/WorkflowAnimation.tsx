@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, MessageCircle, Check, Brain, User, Sparkles, Zap, TrendingUp, Send } from "lucide-react";
+import { MessageCircle, Check, Brain, User, Sparkles, Zap, TrendingUp, Send } from "lucide-react";
 
 interface Step {
   id: number;
   icon: typeof User;
   label: string;
   sublabel: string;
-  color: string;
 }
 
 const steps: Step[] = [
-  { id: 0, icon: User, label: "Lead Captured", sublabel: "From your website", color: "from-blue-500 to-cyan-400" },
-  { id: 1, icon: Brain, label: "AI Analyzes", sublabel: "Context & intent", color: "from-violet-500 to-purple-400" },
-  { id: 2, icon: Send, label: "Message Sent", sublabel: "Via WhatsApp", color: "from-emerald-500 to-teal-400" },
-  { id: 3, icon: TrendingUp, label: "Deal Won", sublabel: "$4,500 closed", color: "from-amber-500 to-orange-400" },
+  { id: 0, icon: User, label: "Lead Captured", sublabel: "From your website" },
+  { id: 1, icon: Brain, label: "AI Analyzes", sublabel: "Context & intent" },
+  { id: 2, icon: Send, label: "Message Sent", sublabel: "Via WhatsApp" },
+  { id: 3, icon: TrendingUp, label: "Deal Won", sublabel: "$4,500 closed" },
 ];
 
 const FloatingParticle = ({ delay, duration, x, size }: { delay: number; duration: number; x: number; size: number }) => (
@@ -82,23 +81,23 @@ export const WorkflowAnimation = () => {
         transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative"
       >
-        {/* Outer glow effect */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-[28px] blur-xl opacity-50" />
+        {/* Outer glow effect (subtle) */}
+        <div className="absolute -inset-1 bg-primary/10 rounded-[28px] blur-xl opacity-50" />
         
         {/* Main card */}
         <div className="relative bg-gradient-to-b from-card/95 to-card/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40">
           {/* Animated gradient border */}
           <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-b from-white/15 via-transparent to-transparent pointer-events-none" />
-          
-          {/* Floating particles */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(6)].map((_, i) => (
+
+          {/* Floating particles (kept minimal + slower so it feels premium) */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+            {[...Array(4)].map((_, i) => (
               <FloatingParticle
                 key={i}
-                delay={i * 0.8}
-                duration={4 + i * 0.5}
-                x={15 + i * 14}
-                size={4 + (i % 3) * 2}
+                delay={i * 1.4}
+                duration={7 + i * 0.8}
+                x={18 + i * 20}
+                size={3 + (i % 2) * 2}
               />
             ))}
           </div>
@@ -109,11 +108,7 @@ export const WorkflowAnimation = () => {
               {/* Animated status dot */}
               <div className="relative">
                 <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-primary"
-                  animate={{ scale: [1, 2, 1], opacity: [1, 0, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
+                <div className="absolute inset-0 rounded-full bg-primary/30 blur-[2px]" />
               </div>
               <span className="text-sm font-medium text-foreground/80">Live Demo</span>
               <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
@@ -124,9 +119,9 @@ export const WorkflowAnimation = () => {
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground/60 font-mono">follow-iq.app</span>
               <div className="hidden sm:flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                <div className="w-3 h-3 rounded-full bg-muted-foreground/20" />
+                <div className="w-3 h-3 rounded-full bg-muted-foreground/20" />
+                <div className="w-3 h-3 rounded-full bg-muted-foreground/20" />
               </div>
             </div>
           </div>
@@ -140,7 +135,7 @@ export const WorkflowAnimation = () => {
               
               {/* Animated progress line */}
               <motion.div
-                className="absolute top-7 left-[calc(12.5%)] h-1 bg-gradient-to-r from-primary via-primary to-accent rounded-full hidden sm:block"
+                className="absolute top-7 left-[calc(12.5%)] h-1 bg-primary/70 rounded-full hidden sm:block"
                 animate={{ width: `${Math.min(currentStep / 3 * 75, 75)}%` }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               />
@@ -164,25 +159,21 @@ export const WorkflowAnimation = () => {
                           scale: status === "active" ? 1 : 1,
                         }}
                       >
-                        {/* Active ring pulse */}
+                        {/* Active ring (no pulse — calmer) */}
                         {status === "active" && (
-                          <motion.div
-                            className={`absolute -inset-2 rounded-2xl bg-gradient-to-r ${step.color} opacity-30`}
-                            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          />
+                          <div className="absolute -inset-2 rounded-2xl border border-primary/30" />
                         )}
 
                         <motion.div
                           className={`relative w-12 h-12 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl flex items-center justify-center overflow-hidden ${
                             status === "complete"
-                              ? `bg-gradient-to-br ${step.color} shadow-lg`
+                              ? "bg-primary text-primary-foreground shadow-lg shadow-primary/10"
                               : status === "active"
                               ? "bg-card border-2 border-primary shadow-lg shadow-primary/20"
                               : "bg-secondary/60 border border-white/5"
                           }`}
                           animate={{
-                            y: status === "active" ? -4 : 0,
+                            y: status === "active" ? -2 : 0,
                           }}
                           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                         >
@@ -192,7 +183,7 @@ export const WorkflowAnimation = () => {
                               animate={{ scale: 1, rotate: 0 }}
                               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                             >
-                              <Check className="w-5 h-5 lg:w-6 lg:h-6 text-white" strokeWidth={3} />
+                              <Check className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={3} />
                             </motion.div>
                           ) : (
                             <Icon
@@ -254,23 +245,23 @@ export const WorkflowAnimation = () => {
                     >
                       {/* Avatar with status ring */}
                       <div className="relative shrink-0">
-                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/20">
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg shadow-lg shadow-primary/10">
                           SM
                         </div>
                         <motion.div
-                          className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-card flex items-center justify-center"
+                          className="absolute -bottom-1 -right-1 w-5 h-5 bg-primary rounded-full border-2 border-card flex items-center justify-center"
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.3 }}
                         >
-                          <Zap className="w-3 h-3 text-white" />
+                          <Zap className="w-3 h-3 text-primary-foreground" />
                         </motion.div>
                       </div>
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <p className="text-base lg:text-lg font-semibold text-foreground">Sarah Martinez</p>
-                          <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-semibold">
+                          <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
                             Hot Lead
                           </span>
                         </div>
@@ -288,17 +279,17 @@ export const WorkflowAnimation = () => {
                   {currentStep === 1 && (
                     <div className="relative">
                       <div className="flex items-center gap-2 mb-4">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-400 flex items-center justify-center">
-                          <Brain className="w-4 h-4 text-white" />
+                        <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
+                          <Brain className="w-4 h-4 text-accent-foreground" />
                         </div>
                         <span className="text-sm font-medium text-foreground">AI composing personalized message...</span>
                         <motion.div
                           className="flex gap-1"
                           animate={{ opacity: [0.4, 1, 0.4] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
+                          transition={{ duration: 2.2, repeat: Infinity }}
                         >
                           {[0, 1, 2].map((i) => (
-                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary" />
+                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/70" />
                           ))}
                         </motion.div>
                       </div>
@@ -325,15 +316,15 @@ export const WorkflowAnimation = () => {
                       animate={{ x: 0 }}
                     >
                       <div className="relative shrink-0">
-                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                          <MessageCircle className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
+                          <MessageCircle className="w-6 h-6 lg:w-7 lg:h-7 text-primary-foreground" />
                         </div>
                       </div>
 
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <p className="text-base lg:text-lg font-semibold text-foreground">WhatsApp Delivered</p>
-                          <div className="flex items-center text-emerald-400">
+                          <div className="flex items-center text-primary">
                             <Check className="w-4 h-4" />
                             <Check className="w-4 h-4 -ml-2" />
                           </div>
@@ -344,7 +335,7 @@ export const WorkflowAnimation = () => {
                       </div>
 
                       <motion.div
-                        className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-sm font-medium"
+                        className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-medium"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.3 }}
@@ -362,21 +353,14 @@ export const WorkflowAnimation = () => {
                       animate={{ scale: 1 }}
                     >
                       <div className="relative shrink-0">
-                        <motion.div
-                          className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center shadow-lg shadow-amber-500/20"
-                          animate={{ rotate: [0, -10, 10, 0] }}
-                          transition={{ duration: 0.5, delay: 0.2 }}
-                        >
-                          <TrendingUp className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
-                        </motion.div>
-                        <motion.div
-                          className="absolute -top-2 -right-2 text-xl"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: [0, 1.3, 1] }}
-                          transition={{ delay: 0.4 }}
-                        >
-                          🎉
-                        </motion.div>
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
+                          <TrendingUp className="w-6 h-6 lg:w-7 lg:h-7 text-primary-foreground" />
+                        </div>
+                        <div className="absolute -top-2 -right-2">
+                          <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-primary" />
+                          </div>
+                        </div>
                       </div>
 
                       <div className="flex-1">
@@ -390,7 +374,7 @@ export const WorkflowAnimation = () => {
                       </div>
 
                       <motion.div
-                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-400 text-white font-semibold text-sm shadow-lg shadow-amber-500/30"
+                        className="px-4 py-2 rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/10"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.3, type: "spring" }}
