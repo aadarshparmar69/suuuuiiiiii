@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut, User } from "lucide-react";
+import { Menu, X, LogOut, User, Settings, Shield, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/useAuth";
+import { UserDropdown } from "@/components/UserDropdown";
 
 const navLinks = [
   { name: "Product", href: "/product" },
@@ -71,16 +72,7 @@ export const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
             {!loading && user ? (
-              <>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <User className="w-4 h-4" />
-                  <span className="max-w-[120px] truncate">{user.email}</span>
-                </div>
-                <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign out
-                </Button>
-              </>
+              <UserDropdown />
             ) : (
               <>
                 <Link to="/login">
@@ -141,19 +133,47 @@ export const Navbar = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: navLinks.length * 0.1 }}
-                className="pt-4 space-y-3"
+                className="pt-4 space-y-2"
               >
                 {!loading && user ? (
-                  <>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground py-2">
-                      <User className="w-4 h-4" />
-                      <span className="truncate">{user.email}</span>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3 px-3 py-3 bg-secondary/50 rounded-lg mb-3">
+                      <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium">
+                        {user.email?.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">
+                          {user.user_metadata?.display_name || user.email?.split("@")[0]}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                      </div>
                     </div>
-                    <Button variant="outline" className="w-full" onClick={handleSignOut}>
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign out
-                    </Button>
-                  </>
+                    <Link to="/account" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary transition-colors">
+                      <User className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-foreground">Account</span>
+                    </Link>
+                    <Link to="/settings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary transition-colors">
+                      <Settings className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-foreground">Settings</span>
+                    </Link>
+                    <Link to="/admin" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary transition-colors">
+                      <Shield className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-foreground">Admin Dashboard</span>
+                    </Link>
+                    <Link to="/contact" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary transition-colors">
+                      <HelpCircle className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-foreground">Help & Support</span>
+                    </Link>
+                    <div className="pt-2 mt-2 border-t border-border">
+                      <button 
+                        onClick={handleSignOut}
+                        className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-destructive hover:bg-destructive/10 transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span className="text-sm">Sign out</span>
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <>
                     <Link to="/login" className="block">
