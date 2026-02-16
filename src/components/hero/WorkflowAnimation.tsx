@@ -13,7 +13,7 @@ const steps: Step[] = [
   { id: 0, icon: User, label: "Lead Captured", sublabel: "From your website" },
   { id: 1, icon: Brain, label: "AI Analyzes", sublabel: "Context & intent" },
   { id: 2, icon: Send, label: "Message Sent", sublabel: "Via WhatsApp" },
-  { id: 3, icon: TrendingUp, label: "Deal Won", sublabel: "$4,500 closed" },
+  { id: 3, icon: TrendingUp, label: "Deal Closed", sublabel: "$4,500 revenue" },
 ];
 
 const FloatingParticle = ({ delay, duration, x, size }: { delay: number; duration: number; x: number; size: number }) => (
@@ -306,7 +306,7 @@ export const WorkflowAnimation = () => {
                       </p>
                     </div>
                     <motion.div className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground font-semibold text-xs sm:text-sm" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
-                      Won
+                      Closed
                     </motion.div>
                   </div>
                 )}
