@@ -73,7 +73,7 @@ export const WorkflowAnimation = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4">
+    <div className="w-full max-w-4xl mx-auto px-3 sm:px-4">
       {/* Main container - premium glass morphism */}
       <motion.div
         initial={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -126,16 +126,16 @@ export const WorkflowAnimation = () => {
             </div>
           </div>
 
-          {/* Content area */}
-          <div className="relative p-5 lg:p-8">
+          {/* Content area - FIXED HEIGHT */}
+          <div className="relative p-4 sm:p-5 lg:p-8">
             {/* Steps with connecting line */}
-            <div className="relative mb-8">
+            <div className="relative mb-6 sm:mb-8">
               {/* Background track */}
-              <div className="absolute top-7 left-[calc(12.5%)] right-[calc(12.5%)] h-1 bg-secondary/50 rounded-full hidden sm:block" />
+              <div className="absolute top-5 sm:top-7 left-[calc(12.5%)] right-[calc(12.5%)] h-0.5 sm:h-1 bg-secondary/50 rounded-full" />
               
               {/* Animated progress line */}
               <motion.div
-                className="absolute top-7 left-[calc(12.5%)] h-1 bg-primary/70 rounded-full hidden sm:block"
+                className="absolute top-5 sm:top-7 left-[calc(12.5%)] h-0.5 sm:h-1 bg-primary/70 rounded-full"
                 animate={{ width: `${Math.min(currentStep / 3 * 75, 75)}%` }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               />
@@ -161,11 +161,11 @@ export const WorkflowAnimation = () => {
                       >
                         {/* Active ring (no pulse — calmer) */}
                         {status === "active" && (
-                          <div className="absolute -inset-2 rounded-2xl border border-primary/30" />
+                          <div className="absolute -inset-1.5 sm:-inset-2 rounded-xl sm:rounded-2xl border border-primary/30" />
                         )}
 
                         <motion.div
-                          className={`relative w-12 h-12 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl flex items-center justify-center overflow-hidden ${
+                          className={`relative w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center overflow-hidden ${
                             status === "complete"
                               ? "bg-primary text-primary-foreground shadow-lg shadow-primary/10"
                               : status === "active"
@@ -183,11 +183,11 @@ export const WorkflowAnimation = () => {
                               animate={{ scale: 1, rotate: 0 }}
                               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                             >
-                              <Check className="w-5 h-5 lg:w-6 lg:h-6" strokeWidth={3} />
+                              <Check className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" strokeWidth={3} />
                             </motion.div>
                           ) : (
                             <Icon
-                              className={`w-5 h-5 lg:w-6 lg:h-6 ${
+                              className={`w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 ${
                                 status === "active" ? "text-primary" : "text-muted-foreground/50"
                               }`}
                             />
@@ -196,9 +196,9 @@ export const WorkflowAnimation = () => {
                       </motion.div>
 
                       {/* Labels */}
-                      <div className="mt-3 text-center hidden sm:block">
+                      <div className="mt-2 sm:mt-3 text-center">
                         <motion.p
-                          className={`text-sm font-semibold transition-all duration-300 ${
+                          className={`text-[10px] sm:text-sm font-semibold transition-all duration-300 leading-tight ${
                             status === "active"
                               ? "text-foreground"
                               : status === "complete"
@@ -209,7 +209,7 @@ export const WorkflowAnimation = () => {
                           {step.label}
                         </motion.p>
                         <p
-                          className={`text-xs mt-0.5 transition-all duration-300 ${
+                          className={`text-[8px] sm:text-xs mt-0.5 transition-all duration-300 hidden sm:block ${
                             status === "active" ? "text-primary" : "text-muted-foreground/50"
                           }`}
                         >
@@ -233,19 +233,19 @@ export const WorkflowAnimation = () => {
                 className="relative"
               >
                 {/* Card with subtle gradient background */}
-                <div className="relative bg-gradient-to-br from-secondary/60 via-secondary/40 to-secondary/30 rounded-2xl p-5 lg:p-6 border border-white/5 overflow-hidden min-h-[100px]">
+                <div className="relative bg-gradient-to-br from-secondary/60 via-secondary/40 to-secondary/30 rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-6 border border-white/5 overflow-hidden h-[80px] sm:h-[100px] lg:h-[110px] flex items-center">
                   {/* Subtle inner glow */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
 
                   {currentStep === 0 && (
                     <motion.div
-                      className="relative flex items-center gap-4"
+                      className="relative flex items-center gap-3 sm:gap-4 w-full"
                       initial={{ x: 20 }}
                       animate={{ x: 0 }}
                     >
                       {/* Avatar with status ring */}
                       <div className="relative shrink-0">
-                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg shadow-lg shadow-primary/10">
+                        <div className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm sm:text-lg shadow-lg shadow-primary/10">
                           SM
                         </div>
                         <motion.div
@@ -258,14 +258,14 @@ export const WorkflowAnimation = () => {
                         </motion.div>
                       </div>
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="text-base lg:text-lg font-semibold text-foreground">Sarah Martinez</p>
-                          <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                       <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                          <p className="text-sm sm:text-base lg:text-lg font-semibold text-foreground truncate">Sarah Martinez</p>
+                          <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] sm:text-xs font-semibold shrink-0">
                             Hot Lead
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground">Viewed pricing page • Intent score: <span className="text-primary font-semibold">85%</span></p>
+                        <p className="text-xs sm:text-sm text-muted-foreground truncate">Viewed pricing page · Intent score: <span className="text-primary font-semibold">85%</span></p>
                       </div>
 
                       <div className="hidden lg:flex items-center gap-2 text-xs text-muted-foreground/60">
@@ -277,12 +277,12 @@ export const WorkflowAnimation = () => {
                   )}
 
                   {currentStep === 1 && (
-                    <div className="relative">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-                          <Brain className="w-4 h-4 text-accent-foreground" />
+                    <div className="relative w-full">
+                      <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-accent flex items-center justify-center shrink-0">
+                          <Brain className="w-3 h-3 sm:w-4 sm:h-4 text-accent-foreground" />
                         </div>
-                        <span className="text-sm font-medium text-foreground">AI composing personalized message...</span>
+                        <span className="text-xs sm:text-sm font-medium text-foreground truncate">AI composing personalized message...</span>
                         <motion.div
                           className="flex gap-1"
                           animate={{ opacity: [0.4, 1, 0.4] }}
@@ -294,8 +294,8 @@ export const WorkflowAnimation = () => {
                         </motion.div>
                       </div>
 
-                      <div className="bg-card/60 rounded-xl p-4 border border-white/10 shadow-inner">
-                        <p className="text-sm lg:text-base text-foreground leading-relaxed">
+                      <div className="bg-card/60 rounded-lg sm:rounded-xl p-2.5 sm:p-4 border border-white/10 shadow-inner">
+                        <p className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed line-clamp-2">
                           {typedMessage}
                           {isTyping && (
                             <motion.span
@@ -311,26 +311,26 @@ export const WorkflowAnimation = () => {
 
                   {currentStep === 2 && (
                     <motion.div
-                      className="flex items-center gap-4"
+                      className="flex items-center gap-3 sm:gap-4 w-full"
                       initial={{ x: 20 }}
                       animate={{ x: 0 }}
                     >
                       <div className="relative shrink-0">
-                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
-                          <MessageCircle className="w-6 h-6 lg:w-7 lg:h-7 text-primary-foreground" />
+                        <div className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
+                          <MessageCircle className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-primary-foreground" />
                         </div>
                       </div>
 
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="text-base lg:text-lg font-semibold text-foreground">WhatsApp Delivered</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                          <p className="text-sm sm:text-base lg:text-lg font-semibold text-foreground truncate">WhatsApp Delivered</p>
                           <div className="flex items-center text-primary">
                             <Check className="w-4 h-4" />
                             <Check className="w-4 h-4 -ml-2" />
                           </div>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          Opened at <span className="text-foreground font-medium">10:32 AM</span> • 98% open rate
+                        <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                          Opened at <span className="text-foreground font-medium">10:32 AM</span> · 98% open rate
                         </p>
                       </div>
 
@@ -348,13 +348,13 @@ export const WorkflowAnimation = () => {
 
                   {(currentStep === 3 || currentStep === 4) && (
                     <motion.div
-                      className="flex items-center gap-4"
+                      className="flex items-center gap-3 sm:gap-4 w-full"
                       initial={{ scale: 0.95 }}
                       animate={{ scale: 1 }}
                     >
                       <div className="relative shrink-0">
-                        <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
-                          <TrendingUp className="w-6 h-6 lg:w-7 lg:h-7 text-primary-foreground" />
+                        <div className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/10">
+                          <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-primary-foreground" />
                         </div>
                         <div className="absolute -top-2 -right-2">
                           <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
@@ -363,13 +363,13 @@ export const WorkflowAnimation = () => {
                         </div>
                       </div>
 
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="text-base lg:text-lg font-semibold text-foreground">Deal Closed!</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5 sm:mb-1">
+                          <p className="text-sm sm:text-base lg:text-lg font-semibold text-foreground">Deal Closed!</p>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          <span className="text-2xl lg:text-3xl font-bold text-foreground">$4,500</span>
-                          <span className="ml-2">• 3 days from first contact</span>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">$4,500</span>
+                          <span className="ml-1.5 sm:ml-2 hidden sm:inline">· 3 days from first contact</span>
                         </p>
                       </div>
 
@@ -389,7 +389,7 @@ export const WorkflowAnimation = () => {
 
             {/* Bottom metrics bar */}
             <motion.div
-              className="flex items-center justify-center gap-6 lg:gap-10 mt-6 pt-5 border-t border-white/5"
+              className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-white/5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
@@ -399,11 +399,11 @@ export const WorkflowAnimation = () => {
                 { label: "Avg. Close Time", value: "3 days", icon: Zap },
                 { label: "Revenue", value: "+340%", icon: TrendingUp },
               ].map((metric) => (
-                <div key={metric.label} className="flex items-center gap-2 text-center">
-                  <metric.icon className="w-4 h-4 text-primary hidden lg:block" />
+                <div key={metric.label} className="flex items-center gap-1.5 sm:gap-2 text-center">
+                  <metric.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary hidden sm:block" />
                   <div>
-                    <p className="text-sm lg:text-base font-bold text-foreground">{metric.value}</p>
-                    <p className="text-[10px] lg:text-xs text-muted-foreground/60">{metric.label}</p>
+                    <p className="text-xs sm:text-sm lg:text-base font-bold text-foreground">{metric.value}</p>
+                    <p className="text-[8px] sm:text-[10px] lg:text-xs text-muted-foreground/60">{metric.label}</p>
                   </div>
                 </div>
               ))}
